@@ -1,57 +1,57 @@
-# Ruozhu Chen — Engineering Portfolio
+# Ruozhu Chen — Software & AI Engineering Portfolio
 
-Production-oriented software engineering work with inspectable source, live deployments, and explicit evidence boundaries.
+AI Technology Application graduate focused on production software, browser automation, LLM workflows, backend systems, and verifiable delivery. Comfortable working across Python, C++, Rust, Go, TypeScript and modern web infrastructure.
 
-## Featured project: Remote Gig Desk
+[Live portfolio](https://crz0614.github.io/ruozhu-portfolio/) · [GitHub profile](https://github.com/crz0614)
 
-Remote Gig Desk is a full-stack workbench for discovering verified remote opportunities, preparing individualized application materials, tracking replies, and executing supported ATS submissions. It is designed to avoid two common automation failures: fabricated opportunity data and false “submitted” states.
+## Featured production project
 
-### Links
+### Remote Gig Desk
 
-- [Live workbench](https://remote-gig-desk-vercel.vercel.app/) — owner-authenticated because it contains private application data
-- [Source repository](https://github.com/crz0614/remote-gig-desk-vercel)
-- [Public portfolio page](https://crz0614.github.io/ruozhu-portfolio/)
+A full-stack workbench that turns public remote-work sources into an evidence-gated application workflow:
 
-### Implemented capabilities
+`discover → verify contact path → understand requirements → generate tailored materials → submit → verify receipt → track reply`
 
-- Multi-source opportunity aggregation with original source links
-- Complete per-opportunity Chinese translation using a free translation path
-- Job-specific application packs grounded in a private profile and verified evidence
-- Automatic DOCX résumé creation and real attachment upload
-- Gmail reply synchronization, classification, translation, summary, and next-action tracking
-- Greenhouse, Lever, Ashby, and Workable browser execution
-- Verified session reuse and explicit CAPTCHA/MFA/legal-confirmation takeover
-- Submission evidence validation before a task can become `submitted`
-- Verified portfolio import, preview, GitHub synchronization, and Pages publishing
+- [Live workbench](https://remote-gig-desk-vercel.vercel.app/) — authentication required because it contains private application data
+- [Source and tests](https://github.com/crz0614/remote-gig-desk-vercel)
+- [Repository overview](https://github.com/crz0614/remote-gig-desk-vercel#readme)
 
-### Architecture
+#### Engineering responsibilities demonstrated
+
+- Designed the Next.js application, server APIs, persistent application state and evidence model.
+- Built multi-source collection with filters that exclude App-only, fabricated, contactless and non-actionable listings.
+- Implemented full-description translation, structured summarization and profile-grounded application generation.
+- Built a paired Chrome executor that fills identity, education, experience, project, skill, portfolio and attachment fields.
+- Added resumable human checkpoints for login, CAPTCHA, MFA, identity and legal confirmation.
+- Integrated Gmail and GitHub APIs and supported Greenhouse, Lever, Ashby and Workable workflows.
+- Required provider-matched confirmation evidence before any task can be marked submitted.
+- Kept résumé, email, tokens, cookies and private profile records outside public GitHub.
+
+#### Technology
 
 | Layer | Technology |
 |---|---|
-| Web application | Next.js 16, React 19, TypeScript |
-| Persistence | Neon serverless PostgreSQL |
-| Automation | Vercel Sandbox, Playwright, paired Chrome extension |
-| Integrations | Gmail OAuth, GitHub OAuth/API, Gemini free tier |
-| Deployment | Vercel and GitHub Pages |
+| Frontend and APIs | Next.js 16, React 19, TypeScript |
+| Data | Neon serverless PostgreSQL |
+| Automation | Playwright, Chrome Extension APIs, Vercel Sandbox |
+| AI | Structured LLM generation, translation and classification |
+| Integrations | Gmail OAuth/API, GitHub OAuth/API, ATS forms |
+| Delivery | Vercel, GitHub Pages |
+| Quality | Node test suite, TypeScript production builds, evidence validation |
 
-### Trust and privacy boundaries
+## Core capabilities
 
-- Private profile, résumé, email, OAuth tokens, and application records are not stored in this public repository.
-- Tokens and private profile data are encrypted before database storage.
-- CAPTCHA, MFA, identity, and legal-consent prompts are sent to a human checkpoint rather than bypassed.
-- A click is not treated as a successful submission; official provider evidence is required.
-- No fictional client, revenue, user-count, or delivery metric is presented.
+- **Languages:** Python, C++, Rust, Go, TypeScript/JavaScript
+- **AI engineering:** LLM integration, structured outputs, retrieval-oriented workflows, translation and classification
+- **Backend:** APIs, PostgreSQL, authentication, encrypted data, task queues and state machines
+- **Automation:** Playwright, browser extensions, session-bound workflows and attachment handling
+- **Frontend:** React, Next.js, responsive interfaces and mobile workflows
+- **Deployment:** Vercel, GitHub Pages, cloud functions and production observability
 
-### Verification
+## Evidence policy
 
-The repository includes automated coverage for ATS URL detection, session reuse, attachment delivery, evidence validation, cloud execution checkpoints, email analysis, translation completeness, opportunity state, and portfolio publishing. The test command also performs a production Next.js build.
+This portfolio intentionally avoids invented clients, revenue, user counts, screenshots, or delivery metrics. A capability is listed only when it is supported by inspectable source, a working deployment, tests, or confirmed personal experience. Private application and identity data remain outside public repositories.
 
-```bash
-cd remote-gig-desk-vercel
-npm install
-npm test
-```
+## Current status
 
-## Current scope
-
-This portfolio currently contains one project because it is the only public repository with directly inspectable implementation evidence. Additional projects will be added only when their source, deployment, or other evidence is available—never as invented placeholders.
+The portfolio contains one mature, inspectable system rather than multiple placeholder demos. Additional repositories will be added only when their buttons, data paths, deployment and documentation are complete.
