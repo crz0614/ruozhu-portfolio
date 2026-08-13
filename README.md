@@ -39,6 +39,22 @@ A full-stack workbench that turns public remote-work sources into an evidence-ga
 | Delivery | Vercel, GitHub Pages |
 | Quality | Node test suite, TypeScript production builds, evidence validation |
 
+## Standalone portfolio projects
+
+### [AI Freelance Workbench](https://github.com/crz0614/ai-freelance-workbench)
+
+Explainable Next.js workflow for live opportunity normalization, source health, fit ranking and grounded proposal generation. [Live demo](https://ai-freelance-workbench.vercel.app).
+
+### [Multilingual Support Copilot](https://github.com/crz0614/multilingual-support-copilot)
+
+Transparent GitHub issue ingestion and deterministic intent routing with explicit boundaries when Gmail, translation or LLM providers are not configured. [Live demo](https://multilingual-support-copilot.vercel.app).
+
+### [Distributed Job Runner](https://github.com/crz0614/distributed-job-runner)
+
+Dependency-free Go service demonstrating bounded concurrency, queue backpressure, idempotency, retries, cancellation, graceful shutdown and operational metrics.
+
+All three repositories include automated CI and inspectable tests.
+
 ## Core capabilities
 
 - **Languages:** Python, C++, Rust, Go, TypeScript/JavaScript
@@ -54,4 +70,4 @@ This portfolio intentionally avoids invented clients, revenue, user counts, scre
 
 ## Current status
 
-The portfolio contains one mature, inspectable system rather than multiple placeholder demos. Additional repositories will be added only when their buttons, data paths, deployment and documentation are complete.
+The portfolio now contains one production workbench and three standalone, inspectable projects. Every published project includes source, documentation and automated CI; the two web projects also have public live demos.
