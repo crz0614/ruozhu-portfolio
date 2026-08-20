@@ -1,73 +1,27 @@
-# Ruozhu Chen — Software & AI Engineering Portfolio
+# Ruozhu Chen — Software & AI Engineering
 
-AI Technology Application graduate focused on production software, browser automation, LLM workflows, backend systems, and verifiable delivery. Comfortable working across Python, C++, Rust, Go, TypeScript and modern web infrastructure.
+Public engineering profile focused on AI workflows, developer tooling, automation and backend infrastructure.
 
-[Live portfolio](https://crz0614.github.io/ruozhu-portfolio/) · [GitHub profile](https://github.com/crz0614)
+[Live site](https://crz0614.github.io/ruozhu-portfolio/) · [GitHub profile](https://github.com/crz0614)
 
-## Featured production project
+## Selected work
 
-### Remote Gig Desk
+| Project | What it demonstrates | Links |
+|---|---|---|
+| Remote Gig Desk | Evidence-gated remote-work discovery, application execution and reply tracking | [Product](https://remote-gig-desk-vercel.vercel.app/) · [Source](https://github.com/crz0614/remote-gig-desk-vercel) |
+| Deploy Doctor | Constrained failure reproduction, append-only evidence and approval-gated fixes | [Control plane](https://ruozhu-deploy-doctor.lambdfefoazis.chatgpt.site) · [Source](https://github.com/crz0614/ruozhu-deploy-doctor) |
+| Distributed Job Runner | Bounded concurrency, backpressure, idempotency, retries and graceful shutdown in Go | [Source](https://github.com/crz0614/distributed-job-runner) |
+| AI Freelance Workbench | Multi-source live opportunity filtering and grounded proposal workflows | [Demo](https://ai-freelance-workbench.vercel.app) · [Source](https://github.com/crz0614/ai-freelance-workbench) |
+| Multilingual Support Copilot | Transparent public issue ingestion and deterministic support routing | [Demo](https://multilingual-support-copilot.vercel.app) · [Source](https://github.com/crz0614/multilingual-support-copilot) |
 
-A full-stack workbench that turns public remote-work sources into an evidence-gated application workflow:
+## Capabilities
 
-`discover → verify contact path → understand requirements → generate tailored materials → submit → verify receipt → track reply`
-
-- [Live workbench](https://remote-gig-desk-vercel.vercel.app/) — authentication required because it contains private application data
-- [Source and tests](https://github.com/crz0614/remote-gig-desk-vercel)
-- [Repository overview](https://github.com/crz0614/remote-gig-desk-vercel#readme)
-
-#### Engineering responsibilities demonstrated
-
-- Designed the Next.js application, server APIs, persistent application state and evidence model.
-- Built multi-source collection with filters that exclude App-only, fabricated, contactless and non-actionable listings.
-- Implemented full-description translation, structured summarization and profile-grounded application generation.
-- Built a paired Chrome executor that fills identity, education, experience, project, skill, portfolio and attachment fields.
-- Added resumable human checkpoints for login, CAPTCHA, MFA, identity and legal confirmation.
-- Integrated Gmail and GitHub APIs and supported Greenhouse, Lever, Ashby and Workable workflows.
-- Required provider-matched confirmation evidence before any task can be marked submitted.
-- Kept résumé, email, tokens, cookies and private profile records outside public GitHub.
-
-#### Technology
-
-| Layer | Technology |
-|---|---|
-| Frontend and APIs | Next.js 16, React 19, TypeScript |
-| Data | Neon serverless PostgreSQL |
-| Automation | Playwright, Chrome Extension APIs, Vercel Sandbox |
-| AI | Structured LLM generation, translation and classification |
-| Integrations | Gmail OAuth/API, GitHub OAuth/API, ATS forms |
-| Delivery | Vercel, GitHub Pages |
-| Quality | Node test suite, TypeScript production builds, evidence validation |
-
-## Standalone portfolio projects
-
-### [AI Freelance Workbench](https://github.com/crz0614/ai-freelance-workbench)
-
-Explainable Next.js workflow for live opportunity normalization, source health, fit ranking and grounded proposal generation. [Live demo](https://ai-freelance-workbench.vercel.app).
-
-### [Multilingual Support Copilot](https://github.com/crz0614/multilingual-support-copilot)
-
-Transparent GitHub issue ingestion and deterministic intent routing with explicit boundaries when Gmail, translation or LLM providers are not configured. [Live demo](https://multilingual-support-copilot.vercel.app).
-
-### [Distributed Job Runner](https://github.com/crz0614/distributed-job-runner)
-
-Dependency-free Go service demonstrating bounded concurrency, queue backpressure, idempotency, retries, cancellation, graceful shutdown and operational metrics.
-
-All three repositories include automated CI and inspectable tests.
-
-## Core capabilities
-
-- **Languages:** Python, C++, Rust, Go, TypeScript/JavaScript
-- **AI engineering:** LLM integration, structured outputs, retrieval-oriented workflows, translation and classification
-- **Backend:** APIs, PostgreSQL, authentication, encrypted data, task queues and state machines
-- **Automation:** Playwright, browser extensions, session-bound workflows and attachment handling
-- **Frontend:** React, Next.js, responsive interfaces and mobile workflows
-- **Deployment:** Vercel, GitHub Pages, cloud functions and production observability
+- **AI engineering:** structured generation, classification, translation and human approval flows
+- **Automation:** browser execution, APIs, resumable tasks and evidence-backed completion
+- **Backend:** typed APIs, PostgreSQL, queues, concurrency, retries and metrics
+- **Developer tooling:** deployment diagnosis, review-safe GitHub automation and explicit security boundaries
+- **Languages and platforms:** Python, C++, Rust, Go, TypeScript, Next.js, Playwright, Docker and cloud deployment
 
 ## Evidence policy
 
-This portfolio intentionally avoids invented clients, revenue, user counts, screenshots, or delivery metrics. A capability is listed only when it is supported by inspectable source, a working deployment, tests, or confirmed personal experience. Private application and identity data remain outside public repositories.
-
-## Current status
-
-The portfolio now contains one production workbench and three standalone, inspectable projects. Every published project includes source, documentation and automated CI; the two web projects also have public live demos.
+No invented clients, revenue, user counts or delivery metrics are included. Claims are supported by inspectable source, automated checks, live deployments or clearly stated implementation boundaries. Credentials and private records remain outside public repositories.
