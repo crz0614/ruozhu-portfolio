@@ -14,6 +14,17 @@ Public engineering profile focused on AI workflows, developer tooling, automatio
 | AI Freelance Workbench | Multi-source live opportunity filtering and grounded proposal workflows | [Demo](https://ai-freelance-workbench.vercel.app) · [Source](https://github.com/crz0614/ai-freelance-workbench) |
 | Multilingual Support Copilot | Transparent public issue ingestion and deterministic support routing | [Demo](https://multilingual-support-copilot.vercel.app) · [Source](https://github.com/crz0614/multilingual-support-copilot) |
 
+## Bilingual product lab / 中英双语产品实验室
+
+Six interactive, account-free product demos are hosted inside this portfolio. Every demo supports 中文 / English switching and browser-local sample records.
+
+- Booking & Client Manager / 预约与客户管理
+- AI Support Knowledge Base / AI 客服知识库
+- Commerce Operations Hub / 电商运营自动化
+- Website Health Monitor / 网站健康监控
+- Invoice & Expense Intelligence / 发票与费用识别
+- Client Delivery Portal / 客户项目交付门户
+
 ## Capabilities
 
 - **AI engineering:** structured generation, classification, translation and human approval flows
