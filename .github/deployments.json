@@ -1,0 +1,7 @@
+[
+  {"name": "Portfolio", "url": "https://crz0614.github.io/ruozhu-portfolio/", "expected_status": [200]},
+  {"name": "AI Freelance Workbench", "url": "https://ai-freelance-workbench.vercel.app", "expected_status": [200]},
+  {"name": "Multilingual Support Copilot", "url": "https://multilingual-support-copilot.vercel.app", "expected_status": [200]},
+  {"name": "Remote Gig Desk protected runtime", "url": "https://remote-gig-desk-vercel.vercel.app/", "expected_status": [401]},
+  {"name": "Deploy Doctor protected control plane", "url": "https://ruozhu-deploy-doctor.lambdfefoazis.chatgpt.site", "expected_status": [401]}
+]
