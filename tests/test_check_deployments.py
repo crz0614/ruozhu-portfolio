@@ -22,20 +22,42 @@ class DeploymentHealthTests(unittest.TestCase):
             {"name": "public", "url": "https://public.example", "expected_status": [200]},
             {"name": "protected", "url": "https://protected.example", "expected_status": [401]},
         ]
-        healthy, report = self.run_check(targets, [(200, None), (401, None)])
+        healthy, report = self.run_check(targets, [(200, None, ""), (401, None, "")])
         self.assertTrue(healthy)
         self.assertTrue(report["healthy"])
 
     def test_fails_on_unexpected_status(self):
         targets = [{"name": "public", "url": "https://public.example", "expected_status": [200]}]
-        healthy, report = self.run_check(targets, [(503, None)])
+        healthy, report = self.run_check(targets, [(503, None, "")])
         self.assertFalse(healthy)
         self.assertFalse(report["results"][0]["ok"])
 
     def test_rejects_non_https_target(self):
         targets = [{"name": "bad", "url": "http://example.com", "expected_status": [200]}]
         with self.assertRaises(ValueError):
-            self.run_check(targets, [(200, None)])
+            self.run_check(targets, [(200, None, "")])
+
+    def test_fails_when_expected_application_marker_is_missing(self):
+        targets = [{
+            "name": "public",
+            "url": "https://public.example",
+            "expected_status": [200],
+            "required_text": ["Expected application"],
+        }]
+        healthy, report = self.run_check(targets, [(200, None, "Wrong application")])
+        self.assertFalse(healthy)
+        self.assertEqual(report["results"][0]["missing_text"], ["Expected application"])
+
+    def test_accepts_expected_application_marker(self):
+        targets = [{
+            "name": "public",
+            "url": "https://public.example",
+            "expected_status": [200],
+            "required_text": ["Expected application"],
+        }]
+        healthy, report = self.run_check(targets, [(200, None, "Expected application is live")])
+        self.assertTrue(healthy)
+        self.assertEqual(report["results"][0]["missing_text"], [])
 
 
 if __name__ == "__main__":
