@@ -1,0 +1,26 @@
+name: Deployment health
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe documented deployments
+        run: python3 scripts/check_deployments.py
+      - name: Upload machine-readable report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-health
+          path: deployment-health.json
+          if-no-files-found: error
+          retention-days: 30
