@@ -2,6 +2,7 @@
   {"name": "Portfolio", "url": "https://crz0614.github.io/ruozhu-portfolio/", "expected_status": [200], "required_text": ["Ruozhu Chen · Software & AI Engineer"], "required_headers": {"strict-transport-security": "max-age="}},
   {"name": "AI Freelance Workbench", "url": "https://ai-freelance-workbench.vercel.app", "expected_status": [200], "required_text": ["AI Opportunity Workbench"], "required_headers": {"strict-transport-security": "max-age="}},
   {"name": "Multilingual Support Copilot", "url": "https://multilingual-support-copilot.vercel.app", "expected_status": [200], "required_text": ["Public Issue Triage Copilot"], "required_headers": {"strict-transport-security": "max-age="}},
+  {"name": "Multilingual Support Copilot health API", "url": "https://multilingual-support-copilot.vercel.app/api/health", "expected_status": [200], "required_text": ["\"ok\":true", "\"githubApi\":\"configured\""], "required_headers": {"content-type": "application/json", "strict-transport-security": "max-age="}},
   {"name": "Remote Gig Desk protected runtime", "url": "https://remote-gig-desk-vercel.vercel.app/", "expected_status": [401], "required_headers": {"strict-transport-security": "max-age=", "www-authenticate": "Basic"}},
   {"name": "Deploy Doctor protected control plane", "url": "https://ruozhu-deploy-doctor.lambdfefoazis.chatgpt.site", "expected_status": [401], "required_headers": {"cache-control": "no-store", "referrer-policy": "no-referrer"}}
 ]
