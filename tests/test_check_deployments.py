@@ -22,20 +22,25 @@ class DeploymentHealthTests(unittest.TestCase):
             {"name": "public", "url": "https://public.example", "expected_status": [200]},
             {"name": "protected", "url": "https://protected.example", "expected_status": [401]},
         ]
-        healthy, report = self.run_check(targets, [(200, None, ""), (401, None, "")])
+        healthy, report = self.run_check(targets, [
+            (200, None, "", {}, "https://public.example"),
+            (401, None, "", {}, "https://protected.example"),
+        ])
         self.assertTrue(healthy)
         self.assertTrue(report["healthy"])
 
     def test_fails_on_unexpected_status(self):
         targets = [{"name": "public", "url": "https://public.example", "expected_status": [200]}]
-        healthy, report = self.run_check(targets, [(503, None, "")])
+        healthy, report = self.run_check(
+            targets, [(503, None, "", {}, "https://public.example")]
+        )
         self.assertFalse(healthy)
         self.assertFalse(report["results"][0]["ok"])
 
     def test_rejects_non_https_target(self):
         targets = [{"name": "bad", "url": "http://example.com", "expected_status": [200]}]
         with self.assertRaises(ValueError):
-            self.run_check(targets, [(200, None, "")])
+            self.run_check(targets, [(200, None, "", {}, "http://example.com")])
 
     def test_fails_when_expected_application_marker_is_missing(self):
         targets = [{
@@ -44,7 +49,9 @@ class DeploymentHealthTests(unittest.TestCase):
             "expected_status": [200],
             "required_text": ["Expected application"],
         }]
-        healthy, report = self.run_check(targets, [(200, None, "Wrong application")])
+        healthy, report = self.run_check(targets, [
+            (200, None, "Wrong application", {}, "https://public.example")
+        ])
         self.assertFalse(healthy)
         self.assertEqual(report["results"][0]["missing_text"], ["Expected application"])
 
@@ -55,9 +62,50 @@ class DeploymentHealthTests(unittest.TestCase):
             "expected_status": [200],
             "required_text": ["Expected application"],
         }]
-        healthy, report = self.run_check(targets, [(200, None, "Expected application is live")])
+        healthy, report = self.run_check(targets, [
+            (200, None, "Expected application is live", {}, "https://public.example")
+        ])
         self.assertTrue(healthy)
         self.assertEqual(report["results"][0]["missing_text"], [])
+
+    def test_requires_security_header_value(self):
+        targets = [{
+            "name": "public",
+            "url": "https://public.example",
+            "expected_status": [200],
+            "required_headers": {"Strict-Transport-Security": "max-age="},
+        }]
+        healthy, report = self.run_check(targets, [
+            (200, None, "", {"strict-transport-security": "max-age=31536000"},
+             "https://public.example")
+        ])
+        self.assertTrue(healthy)
+        self.assertEqual(report["results"][0]["header_mismatches"], {})
+
+    def test_fails_when_security_header_is_missing(self):
+        targets = [{
+            "name": "public",
+            "url": "https://public.example",
+            "expected_status": [200],
+            "required_headers": {"Strict-Transport-Security": "max-age="},
+        }]
+        healthy, report = self.run_check(targets, [
+            (200, None, "", {}, "https://public.example")
+        ])
+        self.assertFalse(healthy)
+        self.assertIn("strict-transport-security", report["results"][0]["header_mismatches"])
+
+    def test_fails_on_cross_host_redirect(self):
+        targets = [{
+            "name": "public",
+            "url": "https://public.example",
+            "expected_status": [200],
+        }]
+        healthy, report = self.run_check(targets, [
+            (200, None, "", {}, "https://unexpected.example/login")
+        ])
+        self.assertFalse(healthy)
+        self.assertTrue(report["results"][0]["unexpected_final_host"])
 
 
 if __name__ == "__main__":
