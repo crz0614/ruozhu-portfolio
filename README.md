@@ -24,9 +24,9 @@ The former browser-only product mockups are intentionally excluded from the publ
 
 原有的纯浏览器产品样例已从公开作品集中撤下。只有具备真实后端、持久化存储、第三方 API、自动化测试或明确部署边界的项目才会公开展示。
 
-Every documented deployment is probed daily against an explicit HTTP access contract. Public previews must return `200`; protected operator surfaces must return `401` rather than expose private data. Each run publishes a machine-readable health report as a GitHub Actions artifact.
+Every documented deployment is probed daily against an explicit HTTP access contract. Public previews must return `200` and contain an application-specific marker, preventing a blank page or wrong deployment from passing. Protected operator surfaces must return `401` rather than expose private data. Each run publishes a machine-readable health report as a GitHub Actions artifact.
 
-所有公开列出的部署均按明确的 HTTP 访问契约每日检查：公开预览必须返回 `200`，受保护的操作界面必须返回 `401`，避免泄露私有数据。每次检查都会生成可机器读取的健康报告并保存为 GitHub Actions 构件。
+所有公开列出的部署均按明确的 HTTP 访问契约每日检查：公开预览必须返回 `200` 并包含应用专属标识，防止空白页或错误部署被误判为正常；受保护的操作界面必须返回 `401`，避免泄露私有数据。每次检查都会生成可机器读取的健康报告并保存为 GitHub Actions 构件。
 
 ## Capabilities
 
