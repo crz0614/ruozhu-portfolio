@@ -11,7 +11,7 @@ Public engineering profile focused on AI workflows, developer tooling, automatio
 | Remote Gig Desk | Evidence-gated remote-work discovery, application execution and reply tracking | [Product](https://remote-gig-desk-vercel.vercel.app/) · [Source](https://github.com/crz0614/remote-gig-desk-vercel) |
 | Deploy Doctor | PostgreSQL queue, recoverable worker leases, disposable network-disabled Docker workspaces, Prometheus metrics and approval-gated fixes | [Control plane](https://ruozhu-deploy-doctor.lambdfefoazis.chatgpt.site) · [Source](https://github.com/crz0614/ruozhu-deploy-doctor) · [Worker milestone](https://github.com/crz0614/ruozhu-deploy-doctor/pull/3) |
 | Distributed Job Runner | Durable PostgreSQL execution, recovery, idempotency, authenticated rate limiting and Prometheus metrics | [Source](https://github.com/crz0614/distributed-job-runner) |
-| AI Freelance Workbench | Verified opportunity filtering plus server-persisted pipeline, notes and application drafts | [Preview](https://ai-freelance-workbench.vercel.app) · [Source](https://github.com/crz0614/ai-freelance-workbench) |
+| AI Freelance Workbench | Verified opportunity filtering, server-persisted pipeline/drafts, append-only audit events and privacy-safe Prometheus metrics | [Preview](https://ai-freelance-workbench.vercel.app) · [Source](https://github.com/crz0614/ai-freelance-workbench) · [Audit milestone](https://github.com/crz0614/ai-freelance-workbench/pull/5) |
 | Multilingual Support Copilot | API-verified GitHub sources, durable triage, signed idempotent webhooks and protected operator mutations | [Preview](https://multilingual-support-copilot.vercel.app) · [Source](https://github.com/crz0614/multilingual-support-copilot) |
 
 ## Production evidence / 真实交付证据
