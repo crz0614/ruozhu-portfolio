@@ -13,6 +13,7 @@ Public engineering profile focused on AI workflows, developer tooling, automatio
 | Distributed Job Runner | Durable PostgreSQL execution, recovery, idempotency, authenticated rate limiting and Prometheus metrics | [Source](https://github.com/crz0614/distributed-job-runner) |
 | AI Freelance Workbench | Verified opportunity filtering, server-persisted pipeline/drafts, append-only audit events and privacy-safe Prometheus metrics | [Preview](https://ai-freelance-workbench.vercel.app) · [Source](https://github.com/crz0614/ai-freelance-workbench) · [Audit milestone](https://github.com/crz0614/ai-freelance-workbench/pull/5) |
 | Multilingual Support Copilot | API-verified GitHub sources, durable triage, signed idempotent webhooks and protected operator mutations | [Preview](https://multilingual-support-copilot.vercel.app) · [Source](https://github.com/crz0614/multilingual-support-copilot) |
+| SyncBridge | Signed webhook ingestion, idempotent delivery, bounded retries and durable SQLite/PostgreSQL storage | [Source](https://github.com/crz0614/syncbridge) |
 
 ## Production evidence / 真实交付证据
 
@@ -22,7 +23,11 @@ This portfolio is an index of inspectable engineering work, not a collection of 
 
 The former browser-only product mockups are intentionally excluded from the public portfolio. A project is listed only when its operational behavior is supported by a real backend, persistent storage, a third-party API, automated tests, or an explicit deployment boundary.
 
+The legacy `projects/` pages were removed from the published repository as well as the homepage. CI rejects any attempt to restore those browser-local mockups, so obsolete demo URLs cannot remain publicly accessible and contradict the evidence policy.
+
 原有的纯浏览器产品样例已从公开作品集中撤下。只有具备真实后端、持久化存储、第三方 API、自动化测试或明确部署边界的项目才会公开展示。
+
+旧版 `projects/` 页面也已从发布仓库中删除，而不是仅从首页隐藏。CI 会拒绝这些浏览器本地样例重新进入仓库，避免旧演示链接继续公开并与证据标准冲突。
 
 Every documented deployment is probed daily against an explicit HTTP access contract. Public previews must return `200` and contain an application-specific marker, preventing a blank page or wrong deployment from passing. Protected operator surfaces must return `401` rather than expose private data. The Support Copilot contract also exercises its live JSON health API, so a stale frontend-only deployment cannot pass. The probe verifies required content and security headers and rejects redirects to an undocumented host. Each run publishes a machine-readable health report as a GitHub Actions artifact.
 
