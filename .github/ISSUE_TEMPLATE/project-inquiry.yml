@@ -1,0 +1,55 @@
+name: Project inquiry
+description: Request a scoped quote for a remote engineering project
+title: "Project inquiry: "
+labels:
+  - inquiry
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share enough context for an initial scope and milestone proposal. Do not include passwords, API keys, production data, or other secrets.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Business outcome
+      description: What should be measurably better when the project is complete?
+    validations:
+      required: true
+  - type: textarea
+    id: current-system
+    attributes:
+      label: Current system
+      description: Existing stack, integrations, constraints, and known failures.
+    validations:
+      required: true
+  - type: dropdown
+    id: work-type
+    attributes:
+      label: Work type
+      options:
+        - Website or product feature
+        - Backend or API
+        - Automation or data pipeline
+        - Deployment or reliability repair
+        - Integration or payment workflow
+        - Technical documentation
+    validations:
+      required: true
+  - type: input
+    id: budget
+    attributes:
+      label: Budget range
+      description: A range is enough; milestone funding is required before implementation.
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Target date
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Working terms
+      options:
+        - label: I understand that unpaid trials and speculative implementation are not offered.
+          required: true
