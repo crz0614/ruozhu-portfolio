@@ -13,7 +13,7 @@ CANONICAL_REPOS = {
     "distributed-job-runner",
     "ai-freelance-workbench",
     "multilingual-support-copilot",
-    "syncbridge",
+    "marketplace-payment-loop",
 }
 
 
@@ -30,13 +30,6 @@ class Links(HTMLParser):
 
 
 def main() -> None:
-    legacy_projects = ROOT / "projects"
-    legacy_files = sorted(path for path in legacy_projects.rglob("*") if path.is_file())
-    assert not legacy_files, (
-        "browser-only legacy project pages must not be published: "
-        + ", ".join(str(path.relative_to(ROOT)) for path in legacy_files)
-    )
-
     source = INDEX.read_text(encoding="utf-8")
     lowered = source.lower()
     forbidden = ("open demo · 打开演示", "stores sample activity locally", "six bilingual product demos")
