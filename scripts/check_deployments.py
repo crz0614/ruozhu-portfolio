@@ -29,8 +29,9 @@ def probe(
                 headers = {key.lower(): value for key, value in response.headers.items()}
                 return response.status, None, body, headers, response.geturl()
         except HTTPError as exc:
-            headers = {key.lower(): value for key, value in exc.headers.items()}
-            return exc.code, None, "", headers, exc.geturl()
+            with exc:
+                headers = {key.lower(): value for key, value in exc.headers.items()}
+                return exc.code, None, "", headers, exc.geturl()
         except (URLError, TimeoutError, OSError) as exc:
             last_error = f"{type(exc).__name__}: {exc}"
             if attempt + 1 < attempts:
@@ -50,8 +51,10 @@ def check(config_path: Path, report_path: Path) -> bool:
         required_headers = target.get("required_headers", {})
         if not url.startswith("https://"):
             raise ValueError(f"{name}: deployment URL must use HTTPS")
-        if not isinstance(expected, list) or not all(isinstance(value, int) for value in expected):
-            raise ValueError(f"{name}: expected_status must be a list of integers")
+        if not isinstance(expected, list) or not expected or not all(
+            type(value) is int and 100 <= value <= 599 for value in expected
+        ):
+            raise ValueError(f"{name}: expected_status must be a non-empty list of HTTP status codes")
         if not isinstance(required_text, list) or not all(
             isinstance(value, str) and value for value in required_text
         ):
@@ -63,33 +66,43 @@ def check(config_path: Path, report_path: Path) -> bool:
         ):
             raise ValueError(f"{name}: required_headers must map names to required substrings")
         status, error, body, headers, final_url = probe(url)
-        missing_text = [value for value in required_text if value not in body]
+        response_received = status is not None
+        missing_text = [value for value in required_text if value not in body] if response_received else []
         header_mismatches = {
             key.lower(): {"required": value, "observed": headers.get(key.lower())}
             for key, value in required_headers.items()
             if value.lower() not in headers.get(key.lower(), "").lower()
-        }
+        } if response_received else {}
         expected_host = urlparse(url).hostname
         final_host = urlparse(final_url).hostname
         unexpected_final_host = final_host != expected_host
         ok = (
-            status in expected
+            response_received
+            and error is None
+            and status in expected
             and not missing_text
             and not header_mismatches
             and not unexpected_final_host
         )
         healthy = healthy and ok
+        # A transport error says nothing about the application's response headers.
+        # Keep CI fail-closed, but do not describe unobserved headers as absent.
+        verification_state = "passed" if ok else ("failed" if response_received else "unverified")
         results.append({"name": name, "url": url, "expected_status": expected,
                         "required_text": required_text, "missing_text": missing_text,
                         "required_headers": required_headers,
                         "header_mismatches": header_mismatches,
                         "observed_status": status, "final_url": final_url,
                         "unexpected_final_host": unexpected_final_host,
-                        "ok": ok, "error": error})
+                        "ok": ok, "error": error,
+                        "response_received": response_received,
+                        "verification_state": verification_state})
         detail = f" missing_text={missing_text}" if missing_text else ""
         detail += f" header_mismatches={header_mismatches}" if header_mismatches else ""
         detail += f" final_url={final_url}" if unexpected_final_host else ""
-        print(f"{'PASS' if ok else 'FAIL'} {name}: observed={status} expected={expected}{detail}")
+        detail += f" transport_error={error}" if not response_received else ""
+        label = {"passed": "PASS", "failed": "FAIL", "unverified": "UNVERIFIED"}[verification_state]
+        print(f"{label} {name}: observed={status} expected={expected}{detail}")
     report = {"checked_at": datetime.now(UTC).isoformat(), "healthy": healthy, "results": results}
     report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return healthy
