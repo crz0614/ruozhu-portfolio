@@ -41,6 +41,20 @@ acceptance.
 避免不同询盘编号被误去重，补充 Unicode、零值、哈希命名空间和旧重试键测试。
 安装 0.1.1 前须阅读升级与历史数据重放警告；仍不代表真实 CRM 端到端验收。
 
+[Database recovery PR #6](https://github.com/crz0614/syncbridge/pull/6)
+separates delivery from outcome persistence: a failed database acknowledgement
+retries only the same database write, not an already accepted delivery. SQLite
+fault-injection tests cover failures before/after commit and interruptible shutdown;
+the health endpoint returns 503 when its database probe fails. Process crashes can
+still require reconciliation of `processing` records; this is not exactly-once
+delivery or live WordPress→CRM acceptance.
+
+[数据库恢复 PR #6](https://github.com/crz0614/syncbridge/pull/6)
+将实际投递与结果写入分离，数据库确认失败时仅重试写入，不立即重复发送。
+SQLite 故障注入覆盖提交前后失败与停止信号，健康接口在数据库探测失败时返回
+503。进程崩溃后仍可能需要核对 `processing` 记录；不承诺恰好一次投递，
+也不将本次回归测试当作真实 WordPress→CRM 验收。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
