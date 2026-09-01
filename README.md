@@ -117,6 +117,17 @@ reconciliation; this is not automatic crash recovery or real external CRM accept
 六项监听回归测试覆盖三平台，并运行真实 PostgreSQL 容器检查。
 进程崩溃后的遗留目录仍须停止监听并人工核对，不冒充自动崩溃恢复或外部 CRM 验收。
 
+[HTTP failure contracts #12](https://github.com/crz0614/syncbridge/pull/12)
+adds explicit 401/400 responses for malformed credentials/encoding and safe 503
+responses for storage exceptions. Local HTTP tests inject failures and verify
+retry identity is unchanged. [CI #114](https://github.com/crz0614/syncbridge/actions/runs/33554481384)
+is the independent verification record. This PR is not merged or deployed;
+mocked-storage tests are not a real outage drill or external CRM acceptance.
+
+[HTTP 失败契约 #12](https://github.com/crz0614/syncbridge/pull/12) 为错误凭据、
+非法编码和存储异常补齐明确响应，测试验证恢复后重试仍使用同一幂等键。
+此修复尚未合并或部署；本地 HTTP 故障注入不冒充真实数据库故障或 CRM 验收。
+
 ### Pages deployment recovery — 2026-09-02 (UTC+08:00)
 
 [Pages run 33536150633](https://github.com/crz0614/ruozhu-portfolio/actions/runs/33536150633)
