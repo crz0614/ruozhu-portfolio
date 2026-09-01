@@ -17,6 +17,19 @@ Public engineering profile focused on AI workflows, developer tooling, automatio
 
 ## Production evidence / 真实交付证据
 
+### SyncBridge outbound safety — 2026-09-01
+
+[Security PR #4](https://github.com/crz0614/syncbridge/pull/4) adds redirect
+rejection to REST/Notion delivery and status-only HTTP errors. Local HTTP-server
+tests verify that 301/302/303/307/308 redirects never reach a second endpoint with
+credentials or payloads. This is source/test evidence, **not** deployed
+WordPress-to-CRM end-to-end acceptance. The latter remains unverified.
+
+[安全修复 PR #4](https://github.com/crz0614/syncbridge/pull/4) 为 REST/Notion
+投递增加重定向拒绝及 HTTP 错误信息最小化。真实本地 HTTP 服务回归测试覆盖
+五种跳转状态，确认第二个端点收不到凭据或数据。这是代码与测试证据，
+**不代表** WordPress→CRM 已完成真实部署端到端验收。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
