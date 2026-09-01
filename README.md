@@ -91,6 +91,31 @@ from being included. These are installation checks, not external CRM acceptance.
 不覆盖，进程环境优先；Docker 增加配置排除及镜像内检查。此证据只覆盖安装与
 配置，不代表外部 CRM 验收。
 
+[Configuration guard #10](https://github.com/crz0614/syncbridge/pull/10)
+requires explicitly selected environment files and rejects unsupported non-empty
+database URL schemes before opening storage, preventing accidental SQLite fallback.
+[CI #102](https://github.com/crz0614/syncbridge/actions/runs/33541380494) exercises
+the configuration regressions, three native installation platforms, and the
+PostgreSQL container integration gate. Empty/unset database URLs retain SQLite;
+no automatic data migration or external CRM acceptance is claimed.
+
+[配置保护 #10](https://github.com/crz0614/syncbridge/pull/10) 在显式配置文件
+缺失或数据库 URL 类型错误时停止，避免误用 SQLite。回归测试覆盖命令不启动、
+数据库不被打开及错误信息不泄密；同时运行三平台安装与 PostgreSQL 容器检查。
+数据库 URL 未设置/空值仍保留 SQLite 行为；不自动迁移历史数据，不冒充外部 CRM 验收。
+
+### Pages deployment recovery — 2026-09-02 (UTC+08:00)
+
+[Pages run 33536150633](https://github.com/crz0614/ruozhu-portfolio/actions/runs/33536150633)
+built commit `bf44a82` successfully but timed out in `updating_pages`. A bounded
+retry completed successfully at 2026-09-01 18:00:32 UTC without changing code or
+weakening checks. This records deployment-system success, not a fresh browser
+end-to-end assertion; public-page inspection was unavailable in this check.
+
+Pages 对 `bf44a82` 构建成功，但发布状态持续等待直至超时；仅重试失败任务后
+平台确认部署成功，未修改代码或放宽验收。本记录是部署系统证据，不代替新的
+浏览器端到端验证；本次公开页面读取未能完成。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
