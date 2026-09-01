@@ -30,6 +30,17 @@ WordPress-to-CRM end-to-end acceptance. The latter remains unverified.
 五种跳转状态，确认第二个端点收不到凭据或数据。这是代码与测试证据，
 **不代表** WordPress→CRM 已完成真实部署端到端验收。
 
+[WordPress key-collision fix #5](https://github.com/crz0614/syncbridge/pull/5)
+preserves distinct enquiry identifiers instead of stripping punctuation or
+folding case. Boundary tests cover Unicode, zero, reserved hash namespaces and
+legacy retry keys. Review the connector's bilingual upgrade/replay warning
+before installing version 0.1.1. This remains source/CI evidence, not live CRM
+acceptance.
+
+[WordPress 编号碰撞修复 #5](https://github.com/crz0614/syncbridge/pull/5)
+避免不同询盘编号被误去重，补充 Unicode、零值、哈希命名空间和旧重试键测试。
+安装 0.1.1 前须阅读升级与历史数据重放警告；仍不代表真实 CRM 端到端验收。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
