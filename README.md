@@ -104,6 +104,19 @@ no automatic data migration or external CRM acceptance is claimed.
 数据库不被打开及错误信息不泄密；同时运行三平台安装与 PostgreSQL 容器检查。
 数据库 URL 未设置/空值仍保留 SQLite 行为；不自动迁移历史数据，不冒充外部 CRM 验收。
 
+[CSV watcher safety #11](https://github.com/crz0614/syncbridge/pull/11)
+claims an input before reading, isolates malformed files, and preserves original
+path-based deduplication keys through database retries. Archive/retry directories
+prevent overwriting a newer same-name arrival. [CI #109](https://github.com/crz0614/syncbridge/actions/runs/33547111760)
+runs six watcher regressions on Linux, Windows and macOS, alongside the real
+PostgreSQL container gate. Crash-left inflight directories still need stopped-worker
+reconciliation; this is not automatic crash recovery or real external CRM acceptance.
+
+[CSV 监听安全修复 #11](https://github.com/crz0614/syncbridge/pull/11) 先领取再读取，
+隔离坏文件，避免归档覆盖和新文件误归档；数据库失败后沿用原幂等键续传。
+六项监听回归测试覆盖三平台，并运行真实 PostgreSQL 容器检查。
+进程崩溃后的遗留目录仍须停止监听并人工核对，不冒充自动崩溃恢复或外部 CRM 验收。
+
 ### Pages deployment recovery — 2026-09-02 (UTC+08:00)
 
 [Pages run 33536150633](https://github.com/crz0614/ruozhu-portfolio/actions/runs/33536150633)
