@@ -1,4 +1,5 @@
 [
+  {"name": "Marketplace PostgreSQL health", "url": "https://hqxyjaepuaruiwdfvvqj.supabase.co/functions/v1/marketplace-payment-loop/api/health", "expected_status": [200], "required_text": ["\"status\":\"ok\"", "\"database_ready\":true", "\"payments_status\":\"disabled_pending_settlement_audit\""], "required_headers": {"content-type": "application/json", "cache-control": "no-store"}},
   {"name": "Portfolio", "url": "https://crz0614.github.io/ruozhu-portfolio/", "expected_status": [200], "required_text": ["Ruozhu Chen · Software & AI Engineer"], "required_headers": {"strict-transport-security": "max-age="}},
   {"name": "AI Freelance Workbench", "url": "https://ai-freelance-workbench.vercel.app", "expected_status": [200], "required_text": ["AI Opportunity Workbench"], "required_headers": {"strict-transport-security": "max-age="}},
   {"name": "Multilingual Support Copilot", "url": "https://multilingual-support-copilot.vercel.app", "expected_status": [200], "required_text": ["Public Issue Triage Copilot"], "required_headers": {"strict-transport-security": "max-age="}},
