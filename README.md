@@ -55,6 +55,18 @@ SQLite 故障注入覆盖提交前后失败与停止信号，健康接口在数�
 503。进程崩溃后仍可能需要核对 `processing` 记录；不承诺恰好一次投递，
 也不将本次回归测试当作真实 WordPress→CRM 验收。
 
+[CSV integrity PR #7](https://github.com/crz0614/syncbridge/pull/7) validates
+the complete input before queue writes, rejecting duplicate/empty headers,
+incorrect column counts and invalid encoding/quoting. SQLite tests verify no
+partial import on format errors, compatibility with prior deduplication keys,
+and resumability after database failures. Database ingestion is still per-row,
+not a whole-file transaction; directory-watcher concurrency remains unverified.
+
+[CSV 完整性 PR #7](https://github.com/crz0614/syncbridge/pull/7) 在写队列前预检
+整份输入，拒绝重复/空列名、列数异常及编码/引号错误。SQLite 回归测试验证坏文件
+不会先导入部分行、旧幂等键仍兼容、数据库故障后可重试续传。入库仍按行提交，
+不是整文件事务；目录监听并发场景仍待验证，不冒充客户生产验收。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
