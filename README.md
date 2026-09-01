@@ -79,6 +79,18 @@ test, not an external WordPress→CRM sandbox acceptance.
 鉴权、签名入库、去重、HTTP 测试接收端投递和重启后的持久化。
 这是容器集成测试，不冒充外部 WordPress→CRM 沙盒验收。
 
+[Native setup repair #9](https://github.com/crz0614/syncbridge/pull/9) restores
+the documented `init` command and loads literal `.env` configuration before native
+commands. Generated secrets are not printed or overwritten; process environment
+wins. CI installs and runs the CLI outside the checkout on Linux, Windows and
+macOS. Docker context exclusions and an image-level check prevent local `.env`
+from being included. These are installation checks, not external CRM acceptance.
+
+[原生安装修复 #9](https://github.com/crz0614/syncbridge/pull/9) 补齐实际缺失的
+初始化命令和配置加载，并增加三个操作系统的真实安装后命令测试。密钥不打印、
+不覆盖，进程环境优先；Docker 增加配置排除及镜像内检查。此证据只覆盖安装与
+配置，不代表外部 CRM 验收。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
