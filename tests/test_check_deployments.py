@@ -107,6 +107,40 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertFalse(healthy)
         self.assertTrue(report["results"][0]["unexpected_final_host"])
 
+    def test_transport_error_is_unverified_not_missing_headers(self):
+        targets = [{"name": "protected", "url": "https://protected.example",
+                    "expected_status": [401], "required_text": ["Restricted"],
+                    "required_headers": {"www-authenticate": "Basic"}}]
+        for error in ["URLError: Tunnel connection failed: 403 Forbidden",
+                      "TimeoutError: timed out", "URLError: certificate verify failed"]:
+            with self.subTest(error=error):
+                healthy, report = self.run_check(targets, [
+                    (None, error, "", {}, "https://protected.example")])
+                result = report["results"][0]
+                self.assertFalse(healthy)
+                self.assertFalse(result["ok"])
+                self.assertFalse(result["response_received"])
+                self.assertEqual(result["verification_state"], "unverified")
+                self.assertEqual(result["header_mismatches"], {})
+                self.assertEqual(result["missing_text"], [])
+                self.assertEqual(result["error"], error)
+
+    def test_received_403_is_contract_failure_not_transport_block(self):
+        targets = [{"name": "public", "url": "https://public.example",
+                    "expected_status": [200], "required_headers": {"x-frame-options": "DENY"}}]
+        healthy, report = self.run_check(targets, [(403, None, "", {}, "https://public.example")])
+        result = report["results"][0]
+        self.assertFalse(healthy)
+        self.assertTrue(result["response_received"])
+        self.assertEqual(result["verification_state"], "failed")
+        self.assertIn("x-frame-options", result["header_mismatches"])
+
+    def test_invalid_expected_status_cannot_accept_transport_failure(self):
+        for expected in [[], [None], [True], [99], [600], ["200"]]:
+            with self.subTest(expected=expected), self.assertRaises(ValueError):
+                self.run_check([{"name": "bad", "url": "https://example.com",
+                                 "expected_status": expected}], [])
+
 
 if __name__ == "__main__":
     unittest.main()

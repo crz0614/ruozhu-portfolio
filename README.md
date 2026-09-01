@@ -59,6 +59,20 @@ Every documented deployment is probed daily against an explicit HTTP access cont
 
 ## Capabilities
 
+### Probe failure semantics / 探测失败分类
+
+Reports distinguish `passed`, `failed` (an HTTP response violates its contract),
+and `unverified` (no HTTP response because of proxy, DNS, TLS or timeout errors).
+Unverified probes keep `healthy=false` and a nonzero exit code, but do not invent
+missing content/security headers. Transport details are not proof of an origin
+outage. All existing checks remain enforced when a response is received.
+No database migration is needed; rollback restores the preceding checker.
+
+报告区分通过、响应不符合契约和未能验证。代理、DNS、TLS 或超时导致未收到
+响应时，仍以非零退出码阻止误报健康，但不再声称服务缺少未曾观测到的响应头。
+网络错误不等同于源站故障；收到响应后仍执行全部安全和内容检查。无需数据迁移，
+回滚时恢复前版检查脚本即可。
+
 - **AI engineering:** structured generation, classification, translation and human approval flows
 - **Automation:** browser execution, APIs, resumable tasks and evidence-backed completion
 - **Backend:** typed APIs, PostgreSQL, queues, concurrency, retries and metrics
