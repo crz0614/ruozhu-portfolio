@@ -67,6 +67,18 @@ not a whole-file transaction; directory-watcher concurrency remains unverified.
 不会先导入部分行、旧幂等键仍兼容、数据库故障后可重试续传。入库仍按行提交，
 不是整文件事务；目录监听并发场景仍待验证，不冒充客户生产验收。
 
+[PostgreSQL container fix #8](https://github.com/crz0614/syncbridge/pull/8)
+adds the missing driver to the shipped image and a running-container CI gate:
+non-root/read-only startup, PostgreSQL readiness, operator/HMAC authorization,
+signed ingestion and deduplication, authenticated HTTP fixture delivery, and
+retained database state after restart. This is an actual container integration
+test, not an external WordPress→CRM sandbox acceptance.
+
+[PostgreSQL 容器修复 #8](https://github.com/crz0614/syncbridge/pull/8) 补齐镜像
+缺失的数据库驱动，并在 CI 中实际启动非 root、只读容器，验证 PostgreSQL、
+鉴权、签名入库、去重、HTTP 测试接收端投递和重启后的持久化。
+这是容器集成测试，不冒充外部 WordPress→CRM 沙盒验收。
+
 This portfolio is an index of inspectable engineering work, not a collection of invented customer dashboards. Each listed project links to source code, a live service where one is available, and an explicit statement of its current operational boundary.
 
 本作品集用于索引可核验的工程成果，不使用虚构客户、虚构订单或浏览器本地样例冒充生产数据。每个项目均链接源代码；具备线上服务的项目同时提供访问地址，并明确说明当前已接入能力与尚未接入的边界。
