@@ -125,6 +125,28 @@ class DeploymentHealthTests(unittest.TestCase):
                 self.assertEqual(result["missing_text"], [])
                 self.assertEqual(result["error"], error)
 
+    def test_rejects_same_host_insecure_or_different_port_destination(self):
+        targets = [{"name": "public", "url": "https://public.example", "expected_status": [200]}]
+        for final_url in ["http://public.example", "https://public.example:8443",
+                          "https://user:password@public.example", "https://public.example:bad"]:
+            with self.subTest(final_url=final_url):
+                healthy, report = self.run_check(targets, [(200, None, "", {}, final_url)])
+                self.assertFalse(healthy)
+                self.assertTrue(report["results"][0]["unexpected_final_origin"])
+                self.assertEqual(report["results"][0]["verification_state"], "failed")
+
+    def test_accepts_same_https_origin_with_default_port_and_new_path(self):
+        targets = [{"name": "public", "url": "https://public.example", "expected_status": [200]}]
+        healthy, report = self.run_check(targets, [(200, None, "", {}, "https://public.example:443/app")])
+        self.assertTrue(healthy)
+        self.assertFalse(report["results"][0]["unexpected_final_origin"])
+
+    def test_rejects_malformed_or_credential_bearing_configured_url_before_probe(self):
+        for url in ["https:///missing-host", "https://user:password@public.example",
+                    "https://public.example:bad", "https://public.example:70000"]:
+            with self.subTest(url=url), self.assertRaises(ValueError):
+                self.run_check([{"name": "bad", "url": url, "expected_status": [200]}], [])
+
     def test_received_403_is_contract_failure_not_transport_block(self):
         targets = [{"name": "public", "url": "https://public.example",
                     "expected_status": [200], "required_headers": {"x-frame-options": "DENY"}}]
