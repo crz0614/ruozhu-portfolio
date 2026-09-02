@@ -12,6 +12,11 @@ are rejected for configured targets before probing. The existing
 `unexpected_final_host` report field remains available; the new
 `unexpected_final_origin` field includes protocol and port failures.
 
+Configuration URLs must also be strings: numeric, boolean, null, list and object
+values are rejected with the same explicit configuration error before probing.
+This prevents an incidental `AttributeError` in URL parsing; it is configuration
+hardening, not evidence of a live service outage.
+
 Run `python -m unittest discover -s tests -v`: 14 tests, including three new
 origin/configuration regressions. Test responses are injected; these are not new
 live deployment or external CRM acceptance results. This change only validates the
@@ -32,6 +37,9 @@ change.
 新增回归测试先复现漏判，再验证最终地址必须保持 HTTPS、相同域名及有效端口。
 省略端口与显式 443 等价，同源路径跳转仍允许；配置中的坏地址和内嵌凭据在
 发出请求前拒绝。保留旧的域名报告字段，并新增来源不一致字段。
+
+URL 配置必须为字符串：数字、布尔值、空值、列表和对象在请求前统一报配置错误，
+不再意外触发地址解析器的 `AttributeError`。这是配置边界加固，不代表线上服务故障。
 
 本地共 14 项测试通过，其中新增三项来源和配置回归测试；测试注入响应，
 不冒充线上部署或真实 CRM 验收。此修复只核验最终地址，不声称阻止所有跳转
