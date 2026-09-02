@@ -143,7 +143,8 @@ class DeploymentHealthTests(unittest.TestCase):
 
     def test_rejects_malformed_or_credential_bearing_configured_url_before_probe(self):
         for url in ["https:///missing-host", "https://user:password@public.example",
-                    "https://public.example:bad", "https://public.example:70000"]:
+                    "https://public.example:bad", "https://public.example:70000",
+                    123, True, None, [], {"host": "public.example"}]:
             with self.subTest(url=url), self.assertRaises(ValueError):
                 self.run_check([{"name": "bad", "url": url, "expected_status": [200]}], [])
 
