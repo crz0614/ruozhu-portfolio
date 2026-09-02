@@ -18,6 +18,8 @@ DEFAULT_REPORT = ROOT / "deployment-health.json"
 
 def https_origin(url: str) -> tuple[str, int] | None:
     """Return a valid credential-free HTTPS origin, normalizing port 443."""
+    if not isinstance(url, str):
+        return None
     try:
         parsed = urlparse(url)
         if (parsed.scheme != "https" or not parsed.hostname
