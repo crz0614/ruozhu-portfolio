@@ -156,6 +156,18 @@ CI 的 13 项测试通过。线上迁移 `20260903150447_safe_listing_search` �
 只按字面匹配、无误匹配，`anon` 与 `authenticated` 均无执行权限；测试数据全部回滚，
 Edge Function v6 已部署。
 
+### Marketplace session revocation — 2026-09-04
+
+[Session logout PR #14](https://github.com/crz0614/marketplace-payment-loop/pull/14)
+adds an authenticated logout endpoint and bilingual browser control. The server
+deletes the presented hashed session before the browser clears its token; a
+database failure does not report a false success. CI passed 14 tests and Edge
+Function v7 was deployed.
+
+[会话注销 PR #14](https://github.com/crz0614/marketplace-payment-loop/pull/14)
+新增鉴权注销接口和中英双语退出按钮。服务端先删除当前哈希会话，浏览器随后才清除
+令牌；数据库失败时不会误报退出成功。CI 的 14 项测试通过，Edge Function v7 已部署。
+
 ### Pages deployment recovery — 2026-09-02 (UTC+08:00)
 
 [Pages run 33536150633](https://github.com/crz0614/ruozhu-portfolio/actions/runs/33536150633)
