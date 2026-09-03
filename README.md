@@ -1,4 +1,4 @@
-# Ruozhu Chen — Software & AI Engineering
+# Vesper Chen — Software & AI Engineering
 
 Public engineering profile focused on AI workflows, developer tooling, automation and backend infrastructure.
 
