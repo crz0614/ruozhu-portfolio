@@ -111,16 +111,21 @@ moves Checkout event deduplication and order settlement into one restricted Post
 transaction. It validates paid status, currency, amount, Checkout/order identity and
 payment intent; a mismatch rolls back the event record so a corrected Stripe retry is
 not suppressed. [CI run 33753880691](https://github.com/crz0614/marketplace-payment-loop/actions/runs/33753880691)
-passed 11 tests plus syntax and image-build checks. The migration has not yet been
-applied to hosted PostgreSQL, and real Stripe Checkout/webhook/refund acceptance remains
-outstanding, so hosted payment routes stay disabled.
+passed 11 tests plus syntax and image-build checks. On 2026-09-03, migration
+`20260903130601_atomic_checkout_settlement` was applied to hosted PostgreSQL; a disposable
+transaction verified initial settlement, duplicate suppression and rollback, and Edge
+Function v4 was deployed. External HTTP probing was blocked by the verification
+environment, so current uptime is not claimed. Real Stripe Checkout/webhook/refund
+acceptance remains outstanding, so hosted payment routes stay disabled.
 
 [支付安全 PR #8](https://github.com/crz0614/marketplace-payment-loop/pull/8)
 将 Checkout 事件去重与订单入账收进同一受限 PostgreSQL 事务，并核验支付状态、
 币种、金额、Checkout/订单对应关系及 Payment Intent。校验失败会回滚事件记录，
-避免阻断修正后的 Stripe 重试。CI 已通过 11 项测试、语法及镜像构建检查；迁移尚未
-应用至线上 PostgreSQL，真实 Stripe 支付、签名 Webhook 与退款验收仍未完成，
-因此线上支付接口继续关闭。
+避免阻断修正后的 Stripe 重试。CI 已通过 11 项测试、语法及镜像构建检查。2026-09-03
+已将 `20260903130601_atomic_checkout_settlement` 应用于线上 PostgreSQL，在可回滚
+事务中验证首次入账、重复抑制与失败回滚，并部署 Edge Function v4。外部 HTTP 探测受
+验证环境网络策略阻止，因此不声明当前在线可用；真实 Stripe 支付、签名 Webhook 与退款
+验收仍未完成，线上支付接口继续关闭。
 
 ### Pages deployment recovery — 2026-09-02 (UTC+08:00)
 
