@@ -17,8 +17,10 @@ values are rejected with the same explicit configuration error before probing.
 This prevents an incidental `AttributeError` in URL parsing; it is configuration
 hardening, not evidence of a live service outage.
 
-Run `python -m unittest discover -s tests -v`: 14 tests, including three new
-origin/configuration regressions. Test responses are injected; these are not new
+Run `python -m unittest discover -s tests -v`: 15 tests, including origin,
+configuration and malformed response-metadata regressions. A server-advertised
+unknown charset now falls back to UTF-8 with replacement instead of terminating
+the full monitoring run. Test responses are injected; these are not new
 live deployment or external CRM acceptance results. This change only validates the
 final response URL. It does not inspect every redirect hop or prevent the HTTP
 client from following redirects. A future redirect-policy change needs its own
@@ -41,7 +43,8 @@ change.
 URL 配置必须为字符串：数字、布尔值、空值、列表和对象在请求前统一报配置错误，
 不再意外触发地址解析器的 `AttributeError`。这是配置边界加固，不代表线上服务故障。
 
-本地共 14 项测试通过，其中新增三项来源和配置回归测试；测试注入响应，
+本地共 15 项测试通过，覆盖来源、配置和异常响应元数据；服务器声明未知字符集时，
+现在改用 UTF-8 容错解码，不再中断整轮监控。测试注入响应，
 不冒充线上部署或真实 CRM 验收。此修复只核验最终地址，不声称阻止所有跳转
 或核验中途每一跳。传输失败仍为“未能验证”，不会通过健康门槛。
 
