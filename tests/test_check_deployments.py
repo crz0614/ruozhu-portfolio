@@ -1,10 +1,11 @@
 import json
 import tempfile
 import unittest
+from email.message import Message
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
-from scripts.check_deployments import check
+from scripts.check_deployments import check, probe
 
 
 class DeploymentHealthTests(unittest.TestCase):
@@ -16,6 +17,27 @@ class DeploymentHealthTests(unittest.TestCase):
             with patch("scripts.check_deployments.probe", side_effect=responses):
                 healthy = check(config, report)
             return healthy, json.loads(report.read_text(encoding="utf-8"))
+
+    def test_probe_falls_back_when_server_advertises_unknown_charset(self):
+        headers = Message()
+        headers["Content-Type"] = "text/plain; charset=made-up-charset"
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.headers = headers
+        response.read.return_value = b"Expected application \xff"
+        response.status = 200
+        response.geturl.return_value = "https://public.example"
+
+        with patch("scripts.check_deployments.urlopen", return_value=response):
+            status, error, body, observed_headers, final_url = probe(
+                "https://public.example", attempts=1
+            )
+
+        self.assertEqual(status, 200)
+        self.assertIsNone(error)
+        self.assertIn("Expected application", body)
+        self.assertIn("content-type", observed_headers)
+        self.assertEqual(final_url, "https://public.example")
 
     def test_accepts_public_and_protected_contracts(self):
         targets = [
