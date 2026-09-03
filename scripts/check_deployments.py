@@ -42,7 +42,13 @@ def probe(
         try:
             with urlopen(request, timeout=timeout) as response:
                 charset = response.headers.get_content_charset() or "utf-8"
-                payload = response.read(512 * 1024)\n                try:\n                    body = payload.decode(charset, errors="replace")\n                except LookupError:\n                    # A server can advertise an unknown charset. Keep the response\n                    # verifiable instead of crashing the entire health-check run.\n                    body = payload.decode("utf-8", errors="replace")
+                payload = response.read(512 * 1024)
+                try:
+                    body = payload.decode(charset, errors="replace")
+                except LookupError:
+                    # A server can advertise an unknown charset. Keep the response
+                    # verifiable instead of crashing the entire health-check run.
+                    body = payload.decode("utf-8", errors="replace")
                 headers = {key.lower(): value for key, value in response.headers.items()}
                 return response.status, None, body, headers, response.geturl()
         except HTTPError as exc:
