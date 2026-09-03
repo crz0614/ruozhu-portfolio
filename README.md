@@ -104,6 +104,27 @@ no automatic data migration or external CRM acceptance is claimed.
 数据库不被打开及错误信息不泄密；同时运行三平台安装与 PostgreSQL 容器检查。
 数据库 URL 未设置/空值仍保留 SQLite 行为；不自动迁移历史数据，不冒充外部 CRM 验收。
 
+### Vesper Commerce Ops bilingual end-to-end path — 2026-09-04
+
+[Commerce API PR #16](https://github.com/crz0614/marketplace-payment-loop/pull/16)
+adds authenticated shop management, atomic official-export import and a canonical order
+ledger for Amazon, Taobao/Tmall, Pinduoduo, Douyin Shop, Xiaohongshu, Shopify and
+WooCommerce. [Translation PR #18](https://github.com/crz0614/marketplace-payment-loop/pull/18)
+completes Chinese/English navigation, forms, ledger headings and error messages with a
+persisted language switch. CI passed all 19 tests. A disposable deployed flow verified
+registration, Xiaohongshu shop creation, one-row transactional import, order retrieval
+and server-side logout against hosted PostgreSQL; cleanup then confirmed zero remaining
+test users, shops and orders. Direct channel APIs remain disabled until merchant
+authorization. The source runbook documents failure boundaries and reverse-order rollback.
+
+[电商 API PR #16](https://github.com/crz0614/marketplace-payment-loop/pull/16)
+为 Amazon、淘宝/天猫、拼多多、抖音电商、小红书、Shopify 与 WooCommerce 增加鉴权
+店铺管理、官方导出文件原子导入和统一订单账本。[双语修复 PR #18](https://github.com/crz0614/marketplace-payment-loop/pull/18)
+补齐导航、表单、账本表头与错误提示的中英文切换并持久保存语言选择，CI 的 19 项测试
+全部通过。一次性线上流程已针对托管 PostgreSQL 验证注册、小红书店铺创建、单行事务
+导入、订单查询与服务端退出；清理后复核测试用户、店铺和订单均为零。七个平台的直接
+API 在取得商家授权前继续关闭；源码运行手册明确记录失败边界与逆序回滚步骤。
+
 ### Marketplace atomic checkout settlement — 2026-09-03
 
 [Payment safety PR #8](https://github.com/crz0614/marketplace-payment-loop/pull/8)
