@@ -116,8 +116,9 @@ rejects oversized files, imports above 100 rows and duplicate field mappings bef
 [Schema evidence PR #20](https://github.com/crz0614/marketplace-payment-loop/pull/20)
 tracks the exact deployed tables, indexes, RLS policies and atomic import function so a fresh
 environment can reproduce the ledger. [Import audit PR #21](https://github.com/crz0614/marketplace-payment-loop/pull/21)
-adds an owner-scoped history of the latest 100 import runs to the API and bilingual console. CI passed all 25 tests. A disposable deployed flow verified
-registration, Xiaohongshu shop creation, one-row transactional import, order retrieval
+adds an owner-scoped history of the latest 100 import runs to the API and bilingual console.
+[Shop context PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22) identifies each run by its existing shop and channel without adding a table or dependency. CI passed all 25 tests. Disposable deployed checks verified
+registration, Amazon shop creation, one-row transactional import, shop/channel-aware history and order retrieval
 and server-side logout against hosted PostgreSQL; cleanup then confirmed zero remaining
 test users, shops and orders. Direct channel APIs remain disabled until merchant
 authorization. The source runbook documents failure boundaries and reverse-order rollback.
@@ -128,9 +129,9 @@ authorization. The source runbook documents failure boundaries and reverse-order
 补齐导航、表单、账本表头与错误提示的中英文切换并持久保存语言选择；[导入防护 PR #19](https://github.com/crz0614/marketplace-payment-loop/pull/19)
 在提交前拦截超大文件、超过 100 行的批次和重复字段映射；[结构证据 PR #20](https://github.com/crz0614/marketplace-payment-loop/pull/20)
 把已上线的表、索引、RLS 策略和原子导入函数完整纳入迁移，使新环境可从仓库重建账本；[导入审计 PR #21](https://github.com/crz0614/marketplace-payment-loop/pull/21)
-为 API 和双语控制台增加当前账户最近 100 次导入记录。CI 共通过 25 项测试。
-CI 的 21 项测试全部通过。一次性线上流程已针对托管 PostgreSQL 验证注册、小红书店铺创建、单行事务
-导入、订单查询与服务端退出；清理后复核测试用户、店铺和订单均为零。七个平台的直接
+为 API 和双语控制台增加当前账户最近 100 次导入记录；[店铺上下文 PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22)
+复用现有关系标明每次导入的店铺与渠道，不新增表或依赖。CI 共通过 25 项测试。一次性线上检查已针对托管 PostgreSQL 验证注册、Amazon 店铺创建、单行事务
+导入、店铺/渠道审计、订单查询与服务端退出；清理后复核测试用户、店铺和订单均为零。七个平台的直接
 API 在取得商家授权前继续关闭；源码运行手册明确记录失败边界与逆序回滚步骤。
 
 ### Marketplace atomic checkout settlement — 2026-09-03
