@@ -141,6 +141,21 @@ left zero orphan users. Edge Function v5 was deployed. The CI suite passed 11 te
 用户和一个会话；强制会话冲突后遗留用户为零。Edge Function v5 已部署，CI 的
 11 项测试通过。
 
+### Marketplace literal search boundary — 2026-09-03
+
+[Safe-search PR #12](https://github.com/crz0614/marketplace-payment-loop/pull/12)
+removes user text from PostgREST filter grammar and passes it to a restricted
+PostgreSQL function. CI passed 13 tests. Hosted migration
+`20260903150447_safe_listing_search` verified one literal match for metacharacters,
+zero false matches, denied execution to `anon` and `authenticated`, and rolled back
+all disposable rows. Edge Function v6 was deployed.
+
+[安全搜索 PR #12](https://github.com/crz0614/marketplace-payment-loop/pull/12)
+不再把用户输入拼入 PostgREST 过滤语法，而是作为参数传给受限 PostgreSQL 函数。
+CI 的 13 项测试通过。线上迁移 `20260903150447_safe_listing_search` 验证特殊字符
+只按字面匹配、无误匹配，`anon` 与 `authenticated` 均无执行权限；测试数据全部回滚，
+Edge Function v6 已部署。
+
 ### Pages deployment recovery — 2026-09-02 (UTC+08:00)
 
 [Pages run 33536150633](https://github.com/crz0614/ruozhu-portfolio/actions/runs/33536150633)
