@@ -127,6 +127,20 @@ acceptance remains outstanding, so hosted payment routes stay disabled.
 验证环境网络策略阻止，因此不声明当前在线可用；真实 Stripe 支付、签名 Webhook 与退款
 验收仍未完成，线上支付接口继续关闭。
 
+### Marketplace atomic registration — 2026-09-03
+
+[Registration integrity PR #10](https://github.com/crz0614/marketplace-payment-loop/pull/10)
+creates the account and first hashed session in one restricted PostgreSQL transaction.
+Hosted migration `20260903140721_atomic_registration` was verified with disposable data:
+the success path created exactly one user and one session; a forced session conflict
+left zero orphan users. Edge Function v5 was deployed. The CI suite passed 11 tests.
+
+[注册完整性 PR #10](https://github.com/crz0614/marketplace-payment-loop/pull/10)
+将账户与首个哈希会话收进同一受限 PostgreSQL 事务。线上迁移
+`20260903140721_atomic_registration` 使用可回滚数据验证：正常路径只创建一个
+用户和一个会话；强制会话冲突后遗留用户为零。Edge Function v5 已部署，CI 的
+11 项测试通过。
+
 ### Pages deployment recovery — 2026-09-02 (UTC+08:00)
 
 [Pages run 33536150633](https://github.com/crz0614/ruozhu-portfolio/actions/runs/33536150633)
