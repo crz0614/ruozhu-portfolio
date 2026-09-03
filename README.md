@@ -111,7 +111,11 @@ adds authenticated shop management, atomic official-export import and a canonica
 ledger for Amazon, Taobao/Tmall, Pinduoduo, Douyin Shop, Xiaohongshu, Shopify and
 WooCommerce. [Translation PR #18](https://github.com/crz0614/marketplace-payment-loop/pull/18)
 completes Chinese/English navigation, forms, ledger headings and error messages with a
-persisted language switch. CI passed all 19 tests. A disposable deployed flow verified
+persisted language switch. [Import guard PR #19](https://github.com/crz0614/marketplace-payment-loop/pull/19)
+rejects oversized files, imports above 100 rows and duplicate field mappings before submission.
+[Schema evidence PR #20](https://github.com/crz0614/marketplace-payment-loop/pull/20)
+tracks the exact deployed tables, indexes, RLS policies and atomic import function so a fresh
+environment can reproduce the ledger. CI passed all 21 tests. A disposable deployed flow verified
 registration, Xiaohongshu shop creation, one-row transactional import, order retrieval
 and server-side logout against hosted PostgreSQL; cleanup then confirmed zero remaining
 test users, shops and orders. Direct channel APIs remain disabled until merchant
@@ -120,8 +124,10 @@ authorization. The source runbook documents failure boundaries and reverse-order
 [电商 API PR #16](https://github.com/crz0614/marketplace-payment-loop/pull/16)
 为 Amazon、淘宝/天猫、拼多多、抖音电商、小红书、Shopify 与 WooCommerce 增加鉴权
 店铺管理、官方导出文件原子导入和统一订单账本。[双语修复 PR #18](https://github.com/crz0614/marketplace-payment-loop/pull/18)
-补齐导航、表单、账本表头与错误提示的中英文切换并持久保存语言选择，CI 的 19 项测试
-全部通过。一次性线上流程已针对托管 PostgreSQL 验证注册、小红书店铺创建、单行事务
+补齐导航、表单、账本表头与错误提示的中英文切换并持久保存语言选择；[导入防护 PR #19](https://github.com/crz0614/marketplace-payment-loop/pull/19)
+在提交前拦截超大文件、超过 100 行的批次和重复字段映射；[结构证据 PR #20](https://github.com/crz0614/marketplace-payment-loop/pull/20)
+把已上线的表、索引、RLS 策略和原子导入函数完整纳入迁移，使新环境可从仓库重建账本。
+CI 的 21 项测试全部通过。一次性线上流程已针对托管 PostgreSQL 验证注册、小红书店铺创建、单行事务
 导入、订单查询与服务端退出；清理后复核测试用户、店铺和订单均为零。七个平台的直接
 API 在取得商家授权前继续关闭；源码运行手册明确记录失败边界与逆序回滚步骤。
 
