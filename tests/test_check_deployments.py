@@ -1,10 +1,11 @@
 import json
 import tempfile
 import unittest
+from email.message import Message
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
-from scripts.check_deployments import check
+from scripts.check_deployments import check, probe
 
 
 class DeploymentHealthTests(unittest.TestCase):
@@ -16,6 +17,27 @@ class DeploymentHealthTests(unittest.TestCase):
             with patch("scripts.check_deployments.probe", side_effect=responses):
                 healthy = check(config, report)
             return healthy, json.loads(report.read_text(encoding="utf-8"))
+
+    def test_probe_falls_back_when_server_advertises_unknown_charset(self):
+        headers = Message()
+        headers["Content-Type"] = "text/plain; charset=made-up-charset"
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.headers = headers
+        response.read.return_value = b"Expected application \xff"
+        response.status = 200
+        response.geturl.return_value = "https://public.example"
+
+        with patch("scripts.check_deployments.urlopen", return_value=response):
+            status, error, body, observed_headers, final_url = probe(
+                "https://public.example", attempts=1
+            )
+
+        self.assertEqual(status, 200)
+        self.assertIsNone(error)
+        self.assertIn("Expected application", body)
+        self.assertIn("content-type", observed_headers)
+        self.assertEqual(final_url, "https://public.example")
 
     def test_accepts_public_and_protected_contracts(self):
         targets = [
@@ -124,6 +146,29 @@ class DeploymentHealthTests(unittest.TestCase):
                 self.assertEqual(result["header_mismatches"], {})
                 self.assertEqual(result["missing_text"], [])
                 self.assertEqual(result["error"], error)
+
+    def test_rejects_same_host_insecure_or_different_port_destination(self):
+        targets = [{"name": "public", "url": "https://public.example", "expected_status": [200]}]
+        for final_url in ["http://public.example", "https://public.example:8443",
+                          "https://user:password@public.example", "https://public.example:bad"]:
+            with self.subTest(final_url=final_url):
+                healthy, report = self.run_check(targets, [(200, None, "", {}, final_url)])
+                self.assertFalse(healthy)
+                self.assertTrue(report["results"][0]["unexpected_final_origin"])
+                self.assertEqual(report["results"][0]["verification_state"], "failed")
+
+    def test_accepts_same_https_origin_with_default_port_and_new_path(self):
+        targets = [{"name": "public", "url": "https://public.example", "expected_status": [200]}]
+        healthy, report = self.run_check(targets, [(200, None, "", {}, "https://public.example:443/app")])
+        self.assertTrue(healthy)
+        self.assertFalse(report["results"][0]["unexpected_final_origin"])
+
+    def test_rejects_malformed_or_credential_bearing_configured_url_before_probe(self):
+        for url in ["https:///missing-host", "https://user:password@public.example",
+                    "https://public.example:bad", "https://public.example:70000",
+                    123, True, None, [], {"host": "public.example"}]:
+            with self.subTest(url=url), self.assertRaises(ValueError):
+                self.run_check([{"name": "bad", "url": url, "expected_status": [200]}], [])
 
     def test_received_403_is_contract_failure_not_transport_block(self):
         targets = [{"name": "public", "url": "https://public.example",
