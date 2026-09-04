@@ -135,6 +135,16 @@ API 在取得商家授权前继续关闭；源码运行手册明确记录失败�
 [Queue filter PR #35](https://github.com/crz0614/marketplace-payment-loop/pull/35)
 adds a server-side, owner-scoped filter for open, investigating and ignored
 reconciliation exceptions. Unknown states are rejected before the database call.
+
+### Reconciliation exception export — 2026-09-04
+
+[Exception export PR #36](https://github.com/crz0614/marketplace-payment-loop/pull/36)
+adds an authenticated UTF-8 CSV handoff for the currently selected open,
+investigating or ignored queue. It includes shop/channel context, order counts,
+notes and timestamps, while neutralizing spreadsheet-formula-leading values.
+The implementation adds no database table or dependency; all 39 source tests
+and the deployment verification workflow passed before merge. Edge Function
+v24 serves the export with no-store and an explicit attachment filename.
 Both CI workflows passed all 38 tests, Edge Function v23 is active, and hosted
 acceptance returned only `OPEN-SKU` for the open queue and only `IGNORED-SKU`
 for the ignored queue. All disposable users, sessions, shops, imports, orders
