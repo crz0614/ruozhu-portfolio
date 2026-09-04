@@ -145,6 +145,20 @@ notes and timestamps, while neutralizing spreadsheet-formula-leading values.
 The implementation adds no database table or dependency; all 39 source tests
 and the deployment verification workflow passed before merge. Edge Function
 v24 serves the export with no-store and an explicit attachment filename.
+
+### Reconciliation shop filtering — 2026-09-04
+
+[Shop filter PR #37](https://github.com/crz0614/marketplace-payment-loop/pull/37)
+combines an owned-shop selector with the action-state filter for both the live
+queue and its CSV export. Hosted PostgreSQL verification returned one exact
+exception for each selected owned shop, rejected another owner's shop with
+`shop_not_found`, and confirmed that only `service_role` can execute the RPC.
+
+[店铺筛选 PR #37](https://github.com/crz0614/marketplace-payment-loop/pull/37)
+将当前账户拥有的店铺与处理状态组合筛选，并让页面清单和 CSV 导出保持一致。线上
+PostgreSQL 验证分别只返回两个所选店铺各自的一个异常，其他账户的店铺被
+`shop_not_found` 拒绝，同时确认 RPC 仅允许 `service_role` 执行。
+
 Both CI workflows passed all 38 tests, Edge Function v23 is active, and hosted
 acceptance returned only `OPEN-SKU` for the open queue and only `IGNORED-SKU`
 for the ignored queue. All disposable users, sessions, shops, imports, orders
