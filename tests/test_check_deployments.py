@@ -162,7 +162,13 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn('不受 200 条账本上限影响', console)
         self.assertIn('beyond the 200-row ledger limit', console)
         self.assertIn('Number(x.amount_minor)/100', console)
-        self.assertIn("marketplace-payment-loop/pull/29", homepage)
+        self.assertIn('id="inventoryForm"', console)
+        self.assertIn('id="lowStockOnly"', console)
+        self.assertIn("inventoryTitle:'库存与低库存预警'", console)
+        self.assertIn("inventoryTitle:'Inventory and low-stock alerts'", console)
+        self.assertIn("/api/commerce/inventory", console)
+        self.assertIn("p.set('low_stock','true')", console)
+        self.assertIn("marketplace-payment-loop/pull/30", homepage)
 
 
 if __name__ == "__main__":
