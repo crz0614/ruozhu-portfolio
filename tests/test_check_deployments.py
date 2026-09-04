@@ -180,6 +180,7 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn('id="refreshInventoryExceptions"', console)
         self.assertIn("inventoryExceptions:'订单—库存对账异常'", console)
         self.assertIn("inventoryExceptions:'Order–inventory reconciliation exceptions'", console)
+        self.assertIn('id="inventoryExceptionShop"', console)
         self.assertIn('/api/commerce/inventory-exceptions', console)
         self.assertIn('x.order_line_count', console)
         self.assertIn('x.ordered_quantity', console)
@@ -188,6 +189,7 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn('class="saveException"', console)
         self.assertIn("method:'POST'", console)
         self.assertIn("marketplace-payment-loop/pull/34", homepage)
+        self.assertIn("marketplace-payment-loop/pull/37", homepage)
 
 
 if __name__ == "__main__":
