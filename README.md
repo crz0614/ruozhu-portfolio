@@ -130,6 +130,22 @@ authorization. The source runbook documents failure boundaries and reverse-order
 复用现有关系标明每次导入的店铺与渠道；[CSV 导出 PR #27](https://github.com/crz0614/marketplace-payment-loop/pull/27)安全导出当前账户视图；[状态归一 PR #28](https://github.com/crz0614/marketplace-payment-loop/pull/28)保留平台原始值，并由 PostgreSQL 生成七类标准状态；[全量汇总 PR #29](https://github.com/crz0614/marketplace-payment-loop/pull/29)增加受限的账户级全量汇总；[库存 PR #30](https://github.com/crz0614/marketplace-payment-loop/pull/30)增加账户隔离的最新库存表、店铺/SKU 原子更新、来源证据和低库存筛选；[跨店铺库存 PR #31](https://github.com/crz0614/marketplace-payment-loop/pull/31)按完全一致的 SKU 汇总可售库存、补货阈值及低库存店铺数；[补货清单 PR #32](https://github.com/crz0614/marketplace-payment-loop/pull/32)将所选店铺最近 200 条低库存记录导出为防公式注入的 UTF-8 采购交接文件，并明确不擅自推断补货数量；[对账异常 PR #33](https://github.com/crz0614/marketplace-payment-loop/pull/33)找出同一店铺中已出现在订单、却没有完全一致库存记录的 SKU，不进行模糊修正或跨账户查询；[异常处理 PR #34](https://github.com/crz0614/marketplace-payment-loop/pull/34)持久保存账户隔离的调查中/已忽略状态和受限备注，并在导入完全匹配库存后自动移除异常。CI 共通过 38 项测试；真实鉴权流程把 `MISSING-ACTION` 保存为调查中并记录 `Check September export`，跨账户更新返回 404，补入完全一致库存后异常清单归零，清理后测试用户、会话、店铺、订单、库存和处理记录均为零。七个平台的直接
 API 在取得商家授权前继续关闭；源码运行手册明确记录失败边界与逆序回滚步骤。
 
+### Reconciliation queue filtering — 2026-09-04
+
+[Queue filter PR #35](https://github.com/crz0614/marketplace-payment-loop/pull/35)
+adds a server-side, owner-scoped filter for open, investigating and ignored
+reconciliation exceptions. Unknown states are rejected before the database call.
+Both CI workflows passed all 38 tests, Edge Function v23 is active, and hosted
+acceptance returned only `OPEN-SKU` for the open queue and only `IGNORED-SKU`
+for the ignored queue. All disposable users, sessions, shops, imports, orders
+and actions were removed after verification.
+
+[对账队列筛选 PR #35](https://github.com/crz0614/marketplace-payment-loop/pull/35)
+增加服务端、按账户隔离的待处理／调查中／已忽略筛选，并在查询数据库前拒绝未知状态。
+两条 CI 均通过全部 38 项测试，Edge Function v23 已启用；线上验收中，待处理筛选
+只返回 `OPEN-SKU`，已忽略筛选只返回 `IGNORED-SKU`。验证后临时用户、会话、店铺、
+导入、订单和处理记录均已清零。
+
 ### Marketplace atomic checkout settlement — 2026-09-03
 
 [Payment safety PR #8](https://github.com/crz0614/marketplace-payment-loop/pull/8)
