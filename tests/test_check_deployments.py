@@ -177,7 +177,13 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("exportLowStock:'导出低库存 CSV'", console)
         self.assertIn("exportLowStock:'Export low-stock CSV'", console)
         self.assertIn("a.download='vesper-commerce-low-stock.csv'", console)
-        self.assertIn("marketplace-payment-loop/pull/32", homepage)
+        self.assertIn('id="refreshInventoryExceptions"', console)
+        self.assertIn("inventoryExceptions:'订单—库存对账异常'", console)
+        self.assertIn("inventoryExceptions:'Order–inventory reconciliation exceptions'", console)
+        self.assertIn('/api/commerce/inventory-exceptions', console)
+        self.assertIn('x.order_line_count', console)
+        self.assertIn('x.ordered_quantity', console)
+        self.assertIn("marketplace-payment-loop/pull/33", homepage)
 
 
 if __name__ == "__main__":
