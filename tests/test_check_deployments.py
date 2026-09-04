@@ -150,7 +150,12 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("export:'Export CSV'", console)
         self.assertIn("p.set('format','csv')", console)
         self.assertIn("authorization:'Bearer '+token", console)
-        self.assertIn("marketplace-payment-loop/pull/27", homepage)
+        self.assertIn('id="orderCanonical"', console)
+        self.assertIn("allCanonical:'全部标准状态'", console)
+        self.assertIn("allCanonical:'All canonical statuses'", console)
+        self.assertIn("p.set('canonical_status',canonical)", console)
+        self.assertIn("canonicalLabels[lang][x.canonical_status]", console)
+        self.assertIn("marketplace-payment-loop/pull/28", homepage)
 
 
 if __name__ == "__main__":
