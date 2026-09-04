@@ -183,7 +183,11 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn('/api/commerce/inventory-exceptions', console)
         self.assertIn('x.order_line_count', console)
         self.assertIn('x.ordered_quantity', console)
-        self.assertIn("marketplace-payment-loop/pull/33", homepage)
+        self.assertIn("exceptionStates=['open','investigating','ignored']", console)
+        self.assertIn('class="exceptionNote" maxlength="500"', console)
+        self.assertIn('class="saveException"', console)
+        self.assertIn("method:'POST'", console)
+        self.assertIn("marketplace-payment-loop/pull/34", homepage)
 
 
 if __name__ == "__main__":
