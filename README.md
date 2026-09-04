@@ -117,10 +117,7 @@ rejects oversized files, imports above 100 rows and duplicate field mappings bef
 tracks the exact deployed tables, indexes, RLS policies and atomic import function so a fresh
 environment can reproduce the ledger. [Import audit PR #21](https://github.com/crz0614/marketplace-payment-loop/pull/21)
 adds an owner-scoped history of the latest 100 import runs to the API and bilingual console.
-[Shop context PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22) identifies each run by its existing shop and channel without adding a table or dependency. [Date filter PR #26](https://github.com/crz0614/marketplace-payment-loop/pull/26) adds authenticated, owner-scoped shop, original-status and inclusive UTC date filtering to the canonical order ledger. CI passed all 29 tests. Disposable deployed checks verified
-registration, transactional imports, two dated orders globally and only the matching order for one selected UTC day; an inverted range returned 400
-and cleanup then confirmed zero remaining
-test users, shops and orders. Direct channel APIs remain disabled until merchant
+[Shop context PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22) identifies each run by its existing shop and channel without adding a table or dependency. [CSV export PR #27](https://github.com/crz0614/marketplace-payment-loop/pull/27) reuses the authenticated, owner-scoped shop, original-status and inclusive UTC date filters to export the current 200-row view as UTF-8 CSV. Every field is quoted and formula-leading external data is neutralized. CI passed all 30 tests. A disposable deployed check verified that only the matching order was exported, formula content was neutralized and an unsupported format returned 400; cleanup then confirmed zero remaining test users, sessions, shops, imports and orders. Direct channel APIs remain disabled until merchant
 authorization. The source runbook documents failure boundaries and reverse-order rollback.
 
 [电商 API PR #16](https://github.com/crz0614/marketplace-payment-loop/pull/16)
@@ -130,7 +127,7 @@ authorization. The source runbook documents failure boundaries and reverse-order
 在提交前拦截超大文件、超过 100 行的批次和重复字段映射；[结构证据 PR #20](https://github.com/crz0614/marketplace-payment-loop/pull/20)
 把已上线的表、索引、RLS 策略和原子导入函数完整纳入迁移，使新环境可从仓库重建账本；[导入审计 PR #21](https://github.com/crz0614/marketplace-payment-loop/pull/21)
 为 API 和双语控制台增加当前账户最近 100 次导入记录；[店铺上下文 PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22)
-复用现有关系标明每次导入的店铺与渠道，[日期筛选 PR #26](https://github.com/crz0614/marketplace-payment-loop/pull/26)为统一订单账本增加经过鉴权、按账户隔离的店铺、原始状态及包含首尾日期的 UTC 日期筛选，不新增表或依赖。CI 共通过 29 项测试。一次性线上检查已针对托管 PostgreSQL 验证注册与事务导入，并确认全部账本返回 2 条、选择其中一天后只返回对应 1 条，反向日期范围返回 400；清理后复核测试用户、店铺和订单均为零。七个平台的直接
+复用现有关系标明每次导入的店铺与渠道，[CSV 导出 PR #27](https://github.com/crz0614/marketplace-payment-loop/pull/27)沿用经过鉴权、按账户隔离的店铺、原始状态及包含首尾日期的 UTC 日期筛选，将当前视图最近 200 条订单导出为 UTF-8 CSV；所有字段均引用，并中和外部数据的公式前缀，不新增表或依赖。CI 共通过 30 项测试。一次性线上检查确认只导出匹配订单、公式内容被中和、无效格式返回 400；清理后复核测试用户、会话、店铺、导入和订单均为零。七个平台的直接
 API 在取得商家授权前继续关闭；源码运行手册明确记录失败边界与逆序回滚步骤。
 
 ### Marketplace atomic checkout settlement — 2026-09-03
