@@ -155,7 +155,14 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("allCanonical:'All canonical statuses'", console)
         self.assertIn("p.set('canonical_status',canonical)", console)
         self.assertIn("canonicalLabels[lang][x.canonical_status]", console)
-        self.assertIn("marketplace-payment-loop/pull/28", homepage)
+        self.assertIn('/api/commerce/summary', console)
+        self.assertIn('id="refreshSummary"', console)
+        self.assertIn("summary:'运营概览'", console)
+        self.assertIn("summary:'Operations summary'", console)
+        self.assertIn('不受 200 条账本上限影响', console)
+        self.assertIn('beyond the 200-row ledger limit', console)
+        self.assertIn('Number(x.amount_minor)/100', console)
+        self.assertIn("marketplace-payment-loop/pull/29", homepage)
 
 
 if __name__ == "__main__":
