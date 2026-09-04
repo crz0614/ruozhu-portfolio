@@ -168,7 +168,12 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("inventoryTitle:'Inventory and low-stock alerts'", console)
         self.assertIn("/api/commerce/inventory", console)
         self.assertIn("p.set('low_stock','true')", console)
-        self.assertIn("marketplace-payment-loop/pull/30", homepage)
+        self.assertIn('id="refreshInventorySummary"', console)
+        self.assertIn("inventorySummary:'跨店铺 SKU 汇总'", console)
+        self.assertIn("inventorySummary:'Cross-shop SKU summary'", console)
+        self.assertIn('/api/commerce/inventory-summary', console)
+        self.assertIn('x.low_stock_shop_count', console)
+        self.assertIn("marketplace-payment-loop/pull/31", homepage)
 
 
 if __name__ == "__main__":
