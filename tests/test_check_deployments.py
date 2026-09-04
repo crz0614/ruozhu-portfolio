@@ -141,6 +141,17 @@ class DeploymentHealthTests(unittest.TestCase):
                 self.run_check([{"name": "bad", "url": "https://example.com",
                                  "expected_status": expected}], [])
 
+    def test_commerce_console_exposes_bilingual_filtered_csv_export(self):
+        root = Path(__file__).parents[1]
+        console = (root / "commerce-ops" / "index.html").read_text(encoding="utf-8")
+        homepage = (root / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="exportOrders"', console)
+        self.assertIn("export:'导出 CSV'", console)
+        self.assertIn("export:'Export CSV'", console)
+        self.assertIn("p.set('format','csv')", console)
+        self.assertIn("authorization:'Bearer '+token", console)
+        self.assertIn("marketplace-payment-loop/pull/27", homepage)
+
 
 if __name__ == "__main__":
     unittest.main()
