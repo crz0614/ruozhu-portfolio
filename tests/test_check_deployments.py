@@ -173,7 +173,11 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("inventorySummary:'Cross-shop SKU summary'", console)
         self.assertIn('/api/commerce/inventory-summary', console)
         self.assertIn('x.low_stock_shop_count', console)
-        self.assertIn("marketplace-payment-loop/pull/31", homepage)
+        self.assertIn('id="exportLowStock"', console)
+        self.assertIn("exportLowStock:'导出低库存 CSV'", console)
+        self.assertIn("exportLowStock:'Export low-stock CSV'", console)
+        self.assertIn("a.download='vesper-commerce-low-stock.csv'", console)
+        self.assertIn("marketplace-payment-loop/pull/32", homepage)
 
 
 if __name__ == "__main__":
