@@ -117,8 +117,8 @@ rejects oversized files, imports above 100 rows and duplicate field mappings bef
 tracks the exact deployed tables, indexes, RLS policies and atomic import function so a fresh
 environment can reproduce the ledger. [Import audit PR #21](https://github.com/crz0614/marketplace-payment-loop/pull/21)
 adds an owner-scoped history of the latest 100 import runs to the API and bilingual console.
-[Shop context PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22) identifies each run by its existing shop and channel without adding a table or dependency. [Order filter PR #24](https://github.com/crz0614/marketplace-payment-loop/pull/24) adds authenticated, owner-scoped shop filtering to the canonical order ledger. CI passed all 27 tests. Disposable deployed checks verified
-registration, two shop creations, transactional imports, two orders globally and one for the selected shop
+[Shop context PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22) identifies each run by its existing shop and channel without adding a table or dependency. [Status filter PR #25](https://github.com/crz0614/marketplace-payment-loop/pull/25) adds authenticated, owner-scoped shop and original-status filtering to the canonical order ledger. CI passed all 28 tests. Disposable deployed checks verified
+registration, transactional imports, two orders globally and only the matching pending order after filtering
 and server-side logout against hosted PostgreSQL; cleanup then confirmed zero remaining
 test users, shops and orders. Direct channel APIs remain disabled until merchant
 authorization. The source runbook documents failure boundaries and reverse-order rollback.
@@ -130,7 +130,7 @@ authorization. The source runbook documents failure boundaries and reverse-order
 在提交前拦截超大文件、超过 100 行的批次和重复字段映射；[结构证据 PR #20](https://github.com/crz0614/marketplace-payment-loop/pull/20)
 把已上线的表、索引、RLS 策略和原子导入函数完整纳入迁移，使新环境可从仓库重建账本；[导入审计 PR #21](https://github.com/crz0614/marketplace-payment-loop/pull/21)
 为 API 和双语控制台增加当前账户最近 100 次导入记录；[店铺上下文 PR #22](https://github.com/crz0614/marketplace-payment-loop/pull/22)
-复用现有关系标明每次导入的店铺与渠道，[订单筛选 PR #24](https://github.com/crz0614/marketplace-payment-loop/pull/24)为统一订单账本增加经过鉴权、按账户隔离的店铺筛选，不新增表或依赖。CI 共通过 27 项测试。一次性线上检查已针对托管 PostgreSQL 验证注册、两个店铺及两次事务导入，并确认全部账本返回 2 条、选择 Amazon 店铺后只返回对应 1 条；清理后复核测试用户、店铺和订单均为零。七个平台的直接
+复用现有关系标明每次导入的店铺与渠道，[状态筛选 PR #25](https://github.com/crz0614/marketplace-payment-loop/pull/25)为统一订单账本增加经过鉴权、按账户隔离的店铺与原始状态筛选，不新增表或依赖。CI 共通过 28 项测试。一次性线上检查已针对托管 PostgreSQL 验证注册与事务导入，并确认全部账本返回 2 条、按待发货状态筛选后只返回对应 1 条；清理后复核测试用户、店铺和订单均为零。七个平台的直接
 API 在取得商家授权前继续关闭；源码运行手册明确记录失败边界与逆序回滚步骤。
 
 ### Marketplace atomic checkout settlement — 2026-09-03
