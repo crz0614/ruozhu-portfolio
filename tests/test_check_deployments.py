@@ -192,6 +192,10 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("marketplace-payment-loop/pull/37", homepage)
         self.assertIn("syncbridge/pull/10", homepage)
         self.assertIn("syncbridge/actions/runs/33541380494", homepage)
+        self.assertIn("syncbridge/pull/11", homepage)
+        self.assertIn("syncbridge/pull/12", homepage)
+        self.assertIn("syncbridge/actions/runs/33547111760", homepage)
+        self.assertIn("syncbridge/actions/runs/33554481384", homepage)
 
 
 if __name__ == "__main__":
