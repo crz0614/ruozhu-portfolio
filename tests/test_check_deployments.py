@@ -190,6 +190,8 @@ class DeploymentHealthTests(unittest.TestCase):
         self.assertIn("method:'POST'", console)
         self.assertIn("marketplace-payment-loop/pull/34", homepage)
         self.assertIn("marketplace-payment-loop/pull/37", homepage)
+        self.assertIn("syncbridge/pull/10", homepage)
+        self.assertIn("syncbridge/actions/runs/33541380494", homepage)
 
 
 if __name__ == "__main__":
