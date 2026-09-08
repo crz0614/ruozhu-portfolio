@@ -16,6 +16,23 @@ DEFAULT_CONFIG = ROOT / ".github" / "deployments.json"
 DEFAULT_REPORT = ROOT / "deployment-health.json"
 
 
+def https_origin(url: str) -> tuple[str, int] | None:
+    """Return a valid credential-free HTTPS origin, normalizing port 443."""
+    if not isinstance(url, str):
+        return None
+    try:
+        parsed = urlparse(url)
+        if (parsed.scheme != "https" or not parsed.hostname
+                or parsed.username is not None or parsed.password is not None):
+            return None
+        port = parsed.port
+        if port is not None and port < 1:
+            return None
+        return parsed.hostname, 443 if port is None else port
+    except (TypeError, ValueError):
+        return None
+
+
 def probe(
     url: str, timeout: float = 20.0, attempts: int = 2
 ) -> tuple[int | None, str | None, str, dict[str, str], str]:
@@ -25,7 +42,13 @@ def probe(
         try:
             with urlopen(request, timeout=timeout) as response:
                 charset = response.headers.get_content_charset() or "utf-8"
-                body = response.read(512 * 1024).decode(charset, errors="replace")
+                payload = response.read(512 * 1024)
+                try:
+                    body = payload.decode(charset, errors="replace")
+                except LookupError:
+                    # A server can advertise an unknown charset. Keep the response
+                    # verifiable instead of crashing the entire health-check run.
+                    body = payload.decode("utf-8", errors="replace")
                 headers = {key.lower(): value for key, value in response.headers.items()}
                 return response.status, None, body, headers, response.geturl()
         except HTTPError as exc:
@@ -49,8 +72,9 @@ def check(config_path: Path, report_path: Path) -> bool:
         name, url, expected = target["name"], target["url"], target["expected_status"]
         required_text = target.get("required_text", [])
         required_headers = target.get("required_headers", {})
-        if not url.startswith("https://"):
-            raise ValueError(f"{name}: deployment URL must use HTTPS")
+        expected_origin = https_origin(url)
+        if expected_origin is None:
+            raise ValueError(f"{name}: deployment URL must have a valid HTTPS origin without credentials")
         if not isinstance(expected, list) or not expected or not all(
             type(value) is int and 100 <= value <= 599 for value in expected
         ):
@@ -73,16 +97,19 @@ def check(config_path: Path, report_path: Path) -> bool:
             for key, value in required_headers.items()
             if value.lower() not in headers.get(key.lower(), "").lower()
         } if response_received else {}
-        expected_host = urlparse(url).hostname
-        final_host = urlparse(final_url).hostname
-        unexpected_final_host = final_host != expected_host
+        final_origin = https_origin(final_url)
+        unexpected_final_origin = final_origin != expected_origin
+        try:
+            unexpected_final_host = urlparse(final_url).hostname != expected_origin[0]
+        except ValueError:
+            unexpected_final_host = True
         ok = (
             response_received
             and error is None
             and status in expected
             and not missing_text
             and not header_mismatches
-            and not unexpected_final_host
+            and not unexpected_final_origin
         )
         healthy = healthy and ok
         # A transport error says nothing about the application's response headers.
@@ -94,12 +121,13 @@ def check(config_path: Path, report_path: Path) -> bool:
                         "header_mismatches": header_mismatches,
                         "observed_status": status, "final_url": final_url,
                         "unexpected_final_host": unexpected_final_host,
+                        "unexpected_final_origin": unexpected_final_origin,
                         "ok": ok, "error": error,
                         "response_received": response_received,
                         "verification_state": verification_state})
         detail = f" missing_text={missing_text}" if missing_text else ""
         detail += f" header_mismatches={header_mismatches}" if header_mismatches else ""
-        detail += f" final_url={final_url}" if unexpected_final_host else ""
+        detail += " unexpected_final_origin=True" if unexpected_final_origin else ""
         detail += f" transport_error={error}" if not response_received else ""
         label = {"passed": "PASS", "failed": "FAIL", "unverified": "UNVERIFIED"}[verification_state]
         print(f"{label} {name}: observed={status} expected={expected}{detail}")
