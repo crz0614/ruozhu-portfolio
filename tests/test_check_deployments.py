@@ -1,10 +1,33 @@
 import json
 import tempfile
 import unittest
+from email.message import Message
 from pathlib import Path
 from unittest.mock import patch
+from urllib.error import HTTPError
 
-from scripts.check_deployments import check
+from scripts.check_deployments import check, probe
+
+
+class FakeResponse:
+    def __init__(self, url, body=b'{"status":"ok"}'):
+        self.status = 200
+        self._url = url
+        self._body = body
+        self.headers = Message()
+        self.headers["Content-Type"] = "application/json; charset=utf-8"
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+    def read(self, _limit):
+        return self._body
+
+    def geturl(self):
+        return self._url
 
 
 class DeploymentHealthTests(unittest.TestCase):
@@ -36,6 +59,20 @@ class DeploymentHealthTests(unittest.TestCase):
         )
         self.assertFalse(healthy)
         self.assertFalse(report["results"][0]["ok"])
+
+    def test_probe_retries_transient_503(self):
+        url = "https://health.example/api/health"
+        unavailable = HTTPError(url, 503, "Service Unavailable", Message(), None)
+        with patch("scripts.check_deployments.urlopen",
+                   side_effect=[unavailable, FakeResponse(url)]) as request, \
+             patch("scripts.check_deployments.time.sleep") as sleep:
+            status, error, body, _headers, final_url = probe(url)
+        self.assertEqual(status, 200)
+        self.assertIsNone(error)
+        self.assertIn('"status":"ok"', body)
+        self.assertEqual(final_url, url)
+        self.assertEqual(request.call_count, 2)
+        sleep.assert_called_once_with(1)
 
     def test_rejects_non_https_target(self):
         targets = [{"name": "bad", "url": "http://example.com", "expected_status": [200]}]
