@@ -14,10 +14,11 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / ".github" / "deployments.json"
 DEFAULT_REPORT = ROOT / "deployment-health.json"
+RETRYABLE_HTTP_STATUSES = {429, 500, 502, 503, 504}
 
 
 def probe(
-    url: str, timeout: float = 20.0, attempts: int = 2
+    url: str, timeout: float = 20.0, attempts: int = 3
 ) -> tuple[int | None, str | None, str, dict[str, str], str]:
     request = Request(url, headers={"User-Agent": "ruozhu-portfolio-health/1.0"})
     last_error: str | None = None
@@ -31,11 +32,14 @@ def probe(
         except HTTPError as exc:
             with exc:
                 headers = {key.lower(): value for key, value in exc.headers.items()}
-                return exc.code, None, "", headers, exc.geturl()
+                result = (exc.code, None, "", headers, exc.geturl())
+            if exc.code not in RETRYABLE_HTTP_STATUSES or attempt + 1 == attempts:
+                return result
+            time.sleep(2 ** attempt)
         except (URLError, TimeoutError, OSError) as exc:
             last_error = f"{type(exc).__name__}: {exc}"
             if attempt + 1 < attempts:
-                time.sleep(1.0)
+                time.sleep(2 ** attempt)
     return None, last_error, "", {}, url
 
 
